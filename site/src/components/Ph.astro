@@ -1,0 +1,8 @@
+---
+// Photo / video placeholder. `desc` tells the client what shot we need.
+const { kind = 'Photo', desc = '', ratio = '4 / 3', class: className = '' } = Astro.props;
+---
+<div class:list={['ph', className]} style={`aspect-ratio: ${ratio}`} role="img" aria-label={`${kind} placeholder: ${desc}`}>
+  <slot />
+  <p class="ph-label"><strong>{kind}</strong>{desc}</p>
+</div>

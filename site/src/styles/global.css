@@ -1,0 +1,278 @@
+/* Design tokens. Three art directions from docs/04 §4, switchable for the G1 review via html[data-theme].
+   Default = A "Liquid Chrome" (owner, 2026-10-21: use for now, rework after client review). html[data-theme] is set in Base.astro.
+   :root holds B's values as the shared fallback; A and C override. Client brand (Q4) replaces these. */
+
+:root,
+[data-theme='b'] {
+  --bg: #0e0c0a;
+  --surface: #17140f;
+  --surface-2: #221d16;
+  --line: #3b3227;
+  --text: #efe7da;
+  --muted: #b5aa98;
+  --metal-hi: #fff1c4;
+  --metal-mid: #d9b35c;
+  --metal-lo: #6b4520;
+  --cta: #e4572e;
+  --cta-ink: #1a0802;
+  --accent: #3f8f82;
+  --accent-2: #b0793e;
+  --warn: #f2b544;
+  --ok: #7cc6a4;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --pill: 999px;
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-label: 'Space Grotesk', system-ui, sans-serif;
+  --display-weight: 800;
+  --display-tracking: -0.02em;
+  --display-leading: 0.92;
+  --label-tracking: 0.14em;
+  /* Background texture: generic over-under weave, NOT an indigenous pattern (docs/04 rule 4). */
+  --texture: repeating-linear-gradient(45deg, rgb(217 179 92 / 0.035) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(-45deg, rgb(217 179 92 / 0.035) 0 2px, transparent 2px 14px);
+  color-scheme: dark;
+}
+
+[data-theme='a'] {
+  --bg: #07080a;
+  --surface: #111317;
+  --surface-2: #1a1d23;
+  --line: #2c3038;
+  --text: #eef0f3;
+  --muted: #a3a9b3;
+  --metal-hi: #ffffff;
+  --metal-mid: #9da3ad;
+  --metal-lo: #3b3f46;
+  --cta: #7ff3e1;
+  --cta-ink: #04201c;
+  --accent: #b9a6ff;
+  --accent-2: #7ff3e1;
+  --warn: #ffcf70;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'Inter', system-ui, sans-serif;
+  --display-weight: 800;
+  --display-tracking: -0.03em;
+  --display-leading: 0.95;
+  --texture: radial-gradient(60% 40% at 80% 0%, rgb(185 166 255 / 0.10), transparent 70%),
+    radial-gradient(50% 40% at 0% 30%, rgb(127 243 225 / 0.06), transparent 70%);
+}
+
+[data-theme='c'] {
+  --bg: #0b0b0e;
+  --surface: #131418;
+  --surface-2: #1c1e23;
+  --line: #2e3138;
+  --text: #e8eaee;
+  --muted: #9ea3ad;
+  --metal-hi: #ffffff;
+  --metal-mid: #c9ccd3;
+  --metal-lo: #2a2d33;
+  --cta: #ff3b30;
+  --cta-ink: #140101;
+  --accent: #5ce1e6;
+  --accent-2: #c9ccd3;
+  --warn: #ffcc4d;
+  --radius: 2px;
+  --radius-lg: 2px;
+  --font-display: 'Big Shoulders Display', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'JetBrains Mono', ui-monospace, monospace;
+  --display-weight: 900;
+  --display-tracking: 0;
+  --display-leading: 0.88;
+  --label-tracking: 0.08em;
+  --texture: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 4px);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body {
+  margin: 0;
+  background: var(--texture), var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  font: 16px/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+img, svg { max-width: 100%; display: block; }
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; }
+p { margin: 0; }
+
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
+.wrap-narrow { width: min(820px, 100% - 32px); margin-inline: auto; }
+
+:focus-visible { outline: 2px solid var(--cta); outline-offset: 3px; border-radius: 2px; }
+.skip {
+  position: absolute; left: 16px; top: -100px; z-index: 100;
+  padding: 10px 16px; background: var(--cta); color: var(--cta-ink); font-weight: 700; border-radius: var(--radius);
+}
+.skip:focus { top: 12px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ── Type ─────────────────────────────────────────────────────────────────── */
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: var(--display-leading);
+  text-transform: uppercase;
+}
+/* Metal is display-only (docs/04 rule 1): never on body copy, prices or CTAs. */
+.metal {
+  background: linear-gradient(178deg, var(--metal-hi) 0%, var(--metal-mid) 46%, var(--metal-lo) 50%, var(--metal-mid) 62%, var(--metal-hi) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+[data-theme='a'] .metal {
+  background: linear-gradient(178deg, #fff 0%, #c9ced6 40%, #4b505a 50%, #b9a6ff 64%, #7ff3e1 82%, #fff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.eyebrow {
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+[data-theme='c'] .eyebrow { font-size: 14px; }
+.lead { font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5; max-width: 38ch; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ── Sections ─────────────────────────────────────────────────────────────── */
+.section { padding: clamp(64px, 10vw, 112px) 0; position: relative; }
+.section + .section { border-top: 1px solid var(--line); }
+.section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; margin-bottom: clamp(28px, 4vw, 48px); }
+.section-head h2 { font-size: clamp(36px, 6.4vw, 72px); margin-top: 10px; }
+.section-head .more { font-weight: 600; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; min-height: 44px; }
+.section-head .more:hover { color: var(--metal-mid); }
+.page-head { padding: clamp(48px, 8vw, 96px) 0 clamp(24px, 4vw, 40px); }
+.page-head h1 { font-size: clamp(48px, 11vw, 132px); margin-top: 12px; }
+.page-head .lead { margin-top: 18px; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 26px;
+  border: 1px solid transparent; border-radius: var(--pill);
+  background: var(--cta); color: var(--cta-ink);
+  font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled, .btn[aria-disabled='true'] { background: var(--surface-2); color: var(--muted); cursor: not-allowed; filter: none; }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--metal-mid); filter: none; }
+.btn-sm { min-height: 44px; padding: 0 18px; font-size: 15px; }
+.btn-block { width: 100%; }
+[data-theme='c'] .btn { border-radius: 0; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-label); font-size: 15px; }
+
+/* ── Chips ────────────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--pill);
+  font-size: 13px; font-weight: 700; line-height: 1.4;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.chip::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.on_sale { color: var(--ok); }
+.chip.low_stock { color: var(--warn); }
+.chip.sold_out, .chip.coming_soon { color: var(--muted); }
+.chip.popular { color: var(--metal-hi); background: transparent; border-color: var(--metal-mid); }
+.chip.popular::before { background: var(--metal-mid); }
+[data-theme='c'] .chip { border-radius: 0; font-family: var(--font-label); font-weight: 500; }
+
+/* ── Placeholders: visible in review, hidden with the toolbar toggle ─────── */
+.ph-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px; border: 1px dashed var(--warn); border-radius: 4px;
+  color: var(--warn); font: 600 11px/1.6 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase;
+  vertical-align: middle; white-space: nowrap;
+}
+.ph-tag.tm { border-color: var(--accent); color: var(--accent); }
+[data-theme='b'] .ph-tag.tm { color: #74c4b6; border-color: #74c4b6; }
+html[data-placeholders='off'] .ph-tag,
+html[data-placeholders='off'] .ph-only { display: none !important; }
+
+/* Photo / media placeholder block */
+.ph {
+  position: relative; overflow: hidden; display: grid; place-items: end start;
+  background:
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 0.035) 0 10px, transparent 10px 20px),
+    linear-gradient(160deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line); border-radius: var(--radius-lg);
+  color: var(--muted);
+}
+.ph-label { position: relative; z-index: 1; padding: 14px 16px; font-size: 13px; line-height: 1.4; max-width: 34ch; }
+.ph-label strong { display: block; color: var(--text); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+html[data-placeholders='off'] .ph-label { display: none; }
+
+/* ── Forms ────────────────────────────────────────────────────────────────── */
+.field { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+.input {
+  min-height: 52px; padding: 0 16px; width: 100%;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg); color: var(--text);
+}
+.input:focus { border-color: var(--metal-mid); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--metal-mid) 30%, transparent); }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); }
+.check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--cta); flex: none; }
+
+/* ── Accordion (FAQ, comparison) ──────────────────────────────────────────── */
+.acc { border-top: 1px solid var(--line); }
+.acc details { border-bottom: 1px solid var(--line); }
+.acc summary {
+  list-style: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 20px 0; font-size: clamp(17px, 2vw, 20px); font-weight: 600; min-height: 44px;
+}
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary::after {
+  content: '+'; flex: none; width: 32px; height: 32px; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%; font-weight: 400; font-size: 20px; color: var(--metal-mid);
+  transition: transform 0.2s ease;
+}
+.acc details[open] summary::after { transform: rotate(45deg); }
+.acc .acc-body { padding: 0 0 22px; color: var(--muted); max-width: 64ch; }
+
+/* ── Tabs (day / buyer type) ──────────────────────────────────────────────── */
+.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: none; min-height: 44px; padding: 0 18px;
+  border: 1px solid var(--line); border-radius: var(--pill); background: transparent;
+  font-weight: 600; cursor: pointer; color: var(--muted);
+}
+.tab[aria-pressed='true'] { background: var(--text); color: var(--bg); border-color: var(--text); }
+[data-theme='c'] .tab { border-radius: 0; font-family: var(--font-label); text-transform: uppercase; font-size: 14px; }
+
+/* Sale-state visibility helpers (docs/08 §6). html[data-sale] is set at build time and by the review toolbar. */
+[data-show-sale] { display: none; }
+html[data-sale='announce'] [data-show-sale~='announce'],
+html[data-sale='presale'] [data-show-sale~='presale'],
+html[data-sale='onsale'] [data-show-sale~='onsale'],
+html[data-sale='final'] [data-show-sale~='final'],
+html[data-sale='soldout'] [data-show-sale~='soldout'],
+html[data-sale='past'] [data-show-sale~='past'] { display: revert; }

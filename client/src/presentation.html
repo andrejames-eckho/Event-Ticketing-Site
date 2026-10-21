@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[Event] Website — Client Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600;700&family=Syne:wght@800&family=Big+Shoulders+Display:wght@900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root{
+    --black:#07080A;--graphite:#121419;--gunmetal:#1C1F25;--steel:#3B3F46;--silver:#9DA3AD;--bright:#F4F6F8;
+    --paper:#EEF0F3;--ink:#0D0F12;--muted:#5B616B;--line:#D5D9DF;
+    --aqua:#7FF3E1;--aqua-ink:#0B7A6C;--lilac:#B9A6FF;--lilac-ink:#5B45C9;
+    --dmuted:#A9AFB8;--dline:#2A2E35;
+    /* chrome: display only (headings, logo, badges) */
+    --chrome-dark:linear-gradient(180deg,#FFFFFF 0%,#E8EBEF 36%,#9DA3AD 49%,#3B3F46 51%,#C9CED5 74%,#F4F6F8 100%);
+    --chrome-light:linear-gradient(180deg,#6B717B 0%,#22262C 46%,#07080A 50%,#4A4F57 70%,#8A9099 100%);
+    --chrome-rule:linear-gradient(90deg,#3B3F46,#F4F6F8 30%,#9DA3AD 55%,#F4F6F8 75%,#3B3F46);
+    --chrome-pill:linear-gradient(180deg,#FFFFFF,#C9CED5 48%,#9DA3AD 52%,#E6E9ED);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#ccc}
+  .s{width:1280px;height:720px;padding:64px 80px;position:relative;overflow:hidden;page-break-after:always;background:var(--paper)}
+  .s:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--chrome-rule)}
+  .s:last-child{page-break-after:auto}
+  .dark{background:radial-gradient(ellipse 70% 60% at 85% 0%,#15181D,var(--black) 70%);color:var(--bright)}
+  .dark:before{opacity:.5}
+  h1,h2,h3{font-family:Unbounded,Inter,sans-serif;letter-spacing:-.025em}
+  h1,h2,.k{color:var(--ink)}
+  .dark h1,.dark h2,.dark .k{color:var(--bright)}
+  h1{font-size:70px;line-height:1.02;font-weight:800}
+  h2{font-size:40px;line-height:1.12;font-weight:800;max-width:1000px}
+  h3{font-size:19px;font-weight:600;margin-bottom:8px}
+  .eye{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--aqua-ink);margin-bottom:18px}
+  .eye:before{content:"";width:34px;height:2px;background:var(--chrome-rule)}
+  .dark .eye{color:var(--aqua)}
+  .lead{font-size:20px;line-height:1.5;max-width:860px;margin-top:20px;color:var(--muted)}
+  .dark .lead{color:var(--dmuted)}
+  .num{position:absolute;right:80px;bottom:36px;font-size:12px;color:var(--muted);font-family:Unbounded,sans-serif;letter-spacing:.08em;z-index:2}
+  .dark .num{color:#6E747E}
+  .tag{position:absolute;left:80px;bottom:36px;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+  .tag b{font-family:Unbounded,sans-serif;font-weight:600;color:var(--ink)}
+  .dark .tag{color:#6E747E}.dark .tag b{color:var(--silver)}
+  .cols{display:grid;gap:28px;margin-top:40px}
+  .c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+  .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px}
+  .dark .box{background:linear-gradient(180deg,#16191E,#0E1014);border-color:var(--dline)}
+  .box p{font-size:16px;line-height:1.5;color:var(--muted)}
+  .dark .box p{color:var(--dmuted)}
+  .tight .box{padding:18px 20px}.tight h3{font-size:16px}.tight .box p{font-size:14px}
+  .k{font-family:Unbounded,sans-serif;font-size:38px;font-weight:800;line-height:1.1}
+  .pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:99px;background:var(--chrome-pill);color:var(--black);border:1px solid #7C838D}
+  ul.clean{list-style:none}
+  ul.clean li{font-size:18px;padding:11px 0 11px 30px;position:relative;border-bottom:1px solid var(--line)}
+  .dark ul.clean li{border-color:var(--dline);color:#DDE1E6}
+  ul.clean li:before{content:"";position:absolute;left:0;top:18px;width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#9DA3AD 55%,#3B3F46)}
+
+  /* liquid-metal blob */
+  .blob{position:absolute;background:url(assets/blob.png) center/100% 100% no-repeat}
+
+  /* flow */
+  .flow{display:flex;align-items:stretch;gap:0;margin-top:56px}
+  .step{flex:1;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 20px;position:relative}
+  .step .n{font-family:Unbounded,sans-serif;font-weight:800;font-size:13px;color:var(--bright);background:radial-gradient(circle at 35% 30%,#3B3F46,#07080A 70%);border:1px solid #9DA3AD;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .step.hl{background:var(--black);color:var(--bright);border-color:var(--black)}
+  .step.hl .n{background:var(--aqua);color:var(--black);border-color:var(--aqua)}
+  .step.tm{background:#E3E6EB;border-color:#C9CED5}
+  .step h4{font-size:16px;margin-bottom:6px;font-family:Unbounded,sans-serif;font-weight:600}
+  .step p{font-size:14px;line-height:1.45;color:var(--muted)}
+  .step.hl p{color:var(--dmuted)}
+  .arrow{width:34px;display:flex;align-items:center;justify-content:center;color:var(--steel);font-size:26px;font-weight:700}
+  .zone{display:flex;margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .zone div{text-align:center;padding:8px;border-top:3px solid}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:rgba(0,0,0,.06);padding:2px 6px;border-radius:6px}
+  .dark code{background:rgba(255,255,255,.08)}
+
+  /* phone mock */
+  .phone{width:300px;height:600px;border-radius:44px;padding:10px;position:absolute;
+    background:linear-gradient(135deg,#F4F6F8,#5A606A 30%,#E6E9ED 50%,#3B3F46 75%,#C9CED5)}
+  .scr{width:100%;height:100%;border-radius:36px;background:var(--black);color:var(--bright);overflow:hidden;position:relative;font-size:11px}
+  .scr .hd{display:flex;justify-content:space-between;align-items:center;padding:30px 16px 10px;font-weight:800;font-family:Unbounded,sans-serif;font-size:11px;letter-spacing:.06em}
+  .scr .hd span{background:var(--aqua);color:var(--black);border-radius:99px;padding:4px 10px;font-size:9px;font-family:Inter;letter-spacing:0}
+  .tier{margin:8px 12px;background:#121419;border:1px solid var(--dline);border-radius:14px;padding:12px}
+  .tier.pop{border:1.5px solid transparent;background-image:linear-gradient(#121419,#121419),linear-gradient(135deg,#F4F6F8,#3B3F46 45%,#B9A6FF 70%,#7FF3E1);background-origin:border-box;background-clip:padding-box,border-box}
+  .tier b{font-family:Unbounded,sans-serif;font-size:12px;font-weight:600}
+  .ladder{display:flex;gap:4px;margin:7px 0;font-size:9px}
+  .ladder i{font-style:normal;padding:2px 5px;border-radius:5px;background:#1C1F25;color:#7C838D}
+  .ladder i.old{text-decoration:line-through}
+  .ladder i.on{background:var(--bright);color:var(--black);font-weight:700}
+  .row{display:flex;justify-content:space-between;align-items:center}
+  .stp{display:flex;gap:8px;align-items:center;border:1px solid var(--steel);border-radius:99px;padding:3px 9px;font-weight:700}
+  .bag{position:absolute;left:0;right:0;bottom:0;background:#16191E;border-top:1px solid var(--steel);color:var(--bright);padding:14px 16px 22px;border-radius:22px 22px 0 0}
+  .bag .btn{background:var(--aqua);color:var(--black);text-align:center;border-radius:12px;padding:11px;font-weight:800;margin-top:8px;font-size:12px}
+  .bag small{display:block;text-align:center;margin-top:6px;color:var(--silver);font-size:9px}
+
+  /* art directions */
+  .ad{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff}
+  .ad .top{height:200px;padding:24px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+  .ad .top > *{position:relative}
+  .ad .sw{display:flex;height:26px}.ad .sw div{flex:1}
+  .ad .bd{padding:18px 22px}
+  .ad .bd p{font-size:14px;color:var(--muted);line-height:1.45}
+  .ad .bd .fit{margin-top:8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--aqua-ink)}
+
+  table.t{width:100%;border-collapse:collapse;font-size:16px}
+  table.t th,table.t td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left}
+  table.t th{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+  .dark table.t th,.dark table.t td{border-color:var(--dline)}
+  .dark table.t th{color:#6E747E}
+
+  .pk{border-radius:20px;padding:30px;background:#fff;border:1px solid var(--line);position:relative}
+  .pk.rec{color:var(--bright);border:1.5px solid transparent;transform:translateY(-12px);
+    background-image:linear-gradient(var(--black),var(--black)),linear-gradient(160deg,#F4F6F8,#3B3F46 40%,#9DA3AD 60%,#F4F6F8);background-origin:border-box;background-clip:padding-box,border-box}
+  .pk .pr{font-family:Unbounded,sans-serif;font-size:40px;font-weight:600;margin:10px 0 2px}
+  .pk .sub{font-size:14px;color:var(--muted)}
+  .pk.rec .sub{color:var(--silver)}
+  .pk ul{list-style:none;margin-top:16px}
+  .pk li{font-size:15px;padding:7px 0;border-top:1px solid var(--line)}
+  .pk.rec li{border-color:var(--dline);color:#DDE1E6}
+
+  .tl{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:46px}
+  .wk{padding-top:14px;position:relative}
+  .wk:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;border-radius:2px;background:var(--chrome-rule)}
+  .wk b{font-family:Unbounded,sans-serif;font-size:18px;font-weight:600}
+  .wk p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.45}
+  .gate{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;background:var(--black);color:var(--aqua);padding:4px 9px;border-radius:6px;letter-spacing:.02em}
+
+  .lockup{position:relative;display:flex;align-items:center;gap:12px;font-family:Unbounded,sans-serif;font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:600}
+  .lockup .ag{color:var(--silver)}
+  .lockup .x{color:var(--aqua)}
+  .lockup .chrome{color:var(--bright);font-weight:800}
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="s dark">
+  <div class="blob" style="width:700px;height:640px;right:-190px;top:-120px;transform:rotate(-12deg)"></div>
+  <div class="blob" style="width:120px;height:108px;right:470px;top:520px;transform:rotate(28deg)"></div>
+  <div style="position:absolute;left:0;right:0;top:500px;height:2px;background:var(--chrome-rule);opacity:.45"></div>
+  <div class="lockup"><span class="ag">Eckho Systems</span><span class="x">×</span><span class="chrome" data-chrome="dark">Chrome</span></div>
+  <h1 style="margin-top:150px;max-width:720px;position:relative">The official home of [Event]</h1>
+  <p class="lead" style="position:relative;max-width:560px">A festival website that sells tickets through Ticketmelon, made for fans in the Philippines.</p>
+  <div class="tag">Proposal · October 2026</div>
+</section>
+
+<!-- 2 -->
+<section class="s">
+  <div class="eye">Today</div>
+  <h2>Fans are excited, then they hit a bare checkout page</h2>
+  <div class="cols c3">
+    <div class="box"><h3>No story</h3><p>A link in your bio goes straight to a ticket page. No lineup, venue or vibe to convince people who aren't sure yet.</p></div>
+    <div class="box"><h3>Unanswered questions</h3><p>"How do I get there? Is there an age limit? Can I get a refund?" Unanswered questions mean lost sales and a full DM inbox.</p></div>
+    <div class="box"><h3>No idea what worked</h3><p>You can't tell which posts, creators or ads sold tickets, so ad money is a guess.</p></div>
+  </div>
+  <p class="lead" style="margin-top:44px">And you don't own any of it: no website, no search traffic, no fan list.</p>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">02</div>
+</section>
+
+<!-- 3 -->
+<section class="s dark">
+  <div class="blob" style="width:420px;height:380px;right:-220px;top:250px;transform:rotate(20deg)"></div>
+  <div class="eye">The idea</div>
+  <h2 style="font-size:50px;max-width:1000px">Your website is the front door.<br>Ticketmelon is the till.</h2>
+  <p class="lead">Every post, ad, poster and QR code points to <b style="color:var(--bright)">[event].com</b>. The site sells the experience and fans choose their tickets there. Ticketmelon handles payment, e-tickets and check-in, which it already does well.</p>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">03</div>
+</section>
+
+<!-- 4 -->
+<section class="s">
+  <div class="eye">How buying works</div>
+  <h2>Pick on our site, pay on Ticketmelon, with the bag already filled</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><h4>Discover</h4><p>Fan taps a post, ad or QR code</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><h4>Get hyped</h4><p>Lineup, vibe, venue and FAQ on [event].com</p></div>
+    <div class="arrow">→</div>
+    <div class="step hl"><div class="n">3</div><h4>Fill the bag</h4><p>Choose tiers and quantities, add a promo code</p></div>
+    <div class="arrow">→</div>
+    <div class="step tm"><div class="n">4</div><h4>Pay</h4><p>Ticketmelon opens with the order ready. GCash, Maya, card, GrabPay</p></div>
+    <div class="arrow">→</div>
+    <div class="step tm"><div class="n">5</div><h4>Get in</h4><p>QR e-ticket by email, scanned at the gate</p></div>
+  </div>
+  <div class="zone"><div style="flex:3.25;border-color:var(--ink);color:var(--ink)">[event].com · our build</div><div style="flex:2.1;border-color:var(--silver);color:var(--muted)">ticketmelon.com · their platform</div></div>
+  <p class="lead" style="font-size:17px;margin-top:34px">Each step is tracked, from first visit to add to bag to checkout started, so you can see what drives sales.</p>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">04</div>
+</section>
+
+<!-- 5 -->
+<section class="s dark">
+  <div class="eye">Proof it works</div>
+  <h2>Wonderfruit already sells this way, on Ticketmelon</h2>
+  <div class="cols c2" style="margin-top:44px;grid-template-columns:1.25fr 1fr">
+    <div>
+      <ul class="clean">
+        <li>A "Bag" on their own site, with prices shown for every phase</li>
+        <li>Checkout says <i>"You'll be redirected to ticketmelon.com"</i></li>
+        <li>Ticketmelon opens with the order already filled in, using a link feature that works on every Ticketmelon event</li>
+        <li>Promo codes and tracking tags go along to checkout</li>
+      </ul>
+      <p style="margin-top:22px;font-size:15px;color:var(--dmuted)">We tested this on 19 Oct 2026. In week 1 we confirm it with your Ticketmelon account manager. If it's ever unavailable, tickets link to the matching Ticketmelon page and still work.</p>
+    </div>
+    <div class="box" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="k" style="font-size:56px">2 of 10</div>
+      <p style="margin-top:10px;font-size:17px">top festival sites we studied already hand off to Ticketmelon: Wonderfruit (Thailand) and DWP (Jakarta).</p>
+    </div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">05</div>
+</section>
+
+<!-- 6 -->
+<section class="s">
+  <div class="eye">Research</div>
+  <h2>What the 10 best festival sites do</h2>
+  <p class="lead" style="font-size:16px;margin-top:10px">Coachella · Tomorrowland · Glastonbury · Primavera Sound · Wonderfruit · DWP · Web Summit · Stripe Sessions · The Weeknd tour · OFFF</p>
+  <div class="cols c4 tight" style="gap:16px;margin-top:24px">
+    <div class="box"><span class="pill">01</span><h3 style="margin-top:12px">Tickets always one tap away</h3><p>A Tickets button in the header, plus a sticky buy bar on mobile.</p></div>
+    <div class="box"><span class="pill">02</span><h3 style="margin-top:12px">Prices on the site</h3><p>"From ₱x" on every card, with fees explained before checkout.</p></div>
+    <div class="box"><span class="pill">03</span><h3 style="margin-top:12px">Honest urgency</h3><p>Show every price phase: sold-out phases, the current price, the next price.</p></div>
+    <div class="box"><span class="pill">04</span><h3 style="margin-top:12px">One switch</h3><p>Pre-sale, on sale or sold out changes every button on the site at once.</p></div>
+    <div class="box"><span class="pill">05</span><h3 style="margin-top:12px">Lineup as poster</h3><p>Big type for headliners, filters by day.</p></div>
+    <div class="box"><span class="pill">06</span><h3 style="margin-top:12px">Barkada deals</h3><p>Group packs and bundles, shown next to VIP to anchor value.</p></div>
+    <div class="box"><span class="pill">07</span><h3 style="margin-top:12px">Fast on 4G</h3><p>Show an image first and load video after. Maps load only when tapped.</p></div>
+    <div class="box"><span class="pill">08</span><h3 style="margin-top:12px">Gap in PH</h3><p>Major Philippine festival sites are offline or parked, so a polished site stands out.</p></div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">06</div>
+</section>
+
+<!-- 7 -->
+<section class="s">
+  <div class="eye">The site</div>
+  <h2>Everything a fan needs, one tap from tickets</h2>
+  <div class="cols c2" style="grid-template-columns:1fr 1fr;margin-top:36px">
+    <table class="t">
+      <tr><th>Page</th><th>Job</th></tr>
+      <tr><td><b>Home</b></td><td>The pitch: hero video, lineup, tickets, venue</td></tr>
+      <tr><td><b>Tickets</b></td><td>Tiers, phases, bag, fees and refund policy explained</td></tr>
+      <tr><td><b>Lineup</b></td><td>Artist pages with music, shareable on socials</td></tr>
+      <tr><td><b>Schedule</b></td><td>Set times by day and stage</td></tr>
+      <tr><td><b>Info</b></td><td>Getting there, where to stay, rules, accessibility</td></tr>
+      <tr><td><b>FAQ</b></td><td>Searchable; cuts DMs</td></tr>
+      <tr><td><b>Past editions</b></td><td>Aftermovies and galleries that build trust</td></tr>
+    </table>
+    <div class="box" style="background:var(--black);border:none;color:var(--bright)">
+      <h3>Built to be reused</h3>
+      <p style="font-size:17px;color:var(--dmuted)">One platform for all of Chrome's events. Each year's edition gets a fresh look, and last year's moves to the archive automatically.</p>
+      <h3 style="margin-top:26px">Your team edits it</h3>
+      <p style="font-size:17px;color:var(--dmuted)">Change prices, sold-out badges, lineup and FAQ from a simple editor, with no developer. Schedule a lineup drop to go live at exactly 12:00 PM.</p>
+    </div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">07</div>
+</section>
+
+<!-- 8 -->
+<section class="s">
+  <div class="eye">Ticket experience</div>
+  <h2 style="max-width:620px">Built for thumbs, in Instagram and TikTok</h2>
+  <ul class="clean" style="max-width:600px;margin-top:34px">
+    <li>Tier cards show every price phase</li>
+    <li>+/– quantity and a bag that slides up from the bottom</li>
+    <li>Fees and redirect explained before payment</li>
+    <li>Same-tab checkout, so it works inside the Instagram, TikTok and Facebook apps</li>
+    <li>Sold out? The button changes to "Join waitlist"</li>
+  </ul>
+  <div class="phone" style="right:120px;top:60px">
+    <div class="scr">
+      <div class="hd">[EVENT] <span>Tickets</span></div>
+      <div style="padding:0 16px 4px;font-family:Unbounded,sans-serif;font-size:18px;font-weight:800" data-chrome="dark">Tickets</div>
+      <div style="padding:0 16px;color:var(--silver);font-size:10px">Phase 2 on sale · ends 30 Nov</div>
+      <div class="tier"><div class="row"><b>1-Day GA</b><span class="stp">– 0 +</span></div>
+        <div class="ladder"><i class="old">₱1,800</i><i class="on">₱2,200</i><i>₱2,600</i><i>Door ₱3,000</i></div></div>
+      <div class="tier pop"><div class="row"><b>Weekend GA</b><span class="stp">– 2 +</span></div>
+        <div class="ladder"><i class="old">₱3,000</i><i class="on">₱3,500</i><i>₱4,200</i></div>
+        <span style="font-size:9px;font-weight:700;color:var(--aqua);letter-spacing:.08em">MOST POPULAR</span></div>
+      <div class="tier"><div class="row"><b>Barkada 4-Pack</b><span class="stp">– 0 +</span></div>
+        <div class="ladder"><i class="on">₱12,800</i><i>save ₱1,200</i></div></div>
+      <div class="bag">
+        <div class="row"><span>Bag · 2 tickets</span><b style="font-size:14px">₱7,000</b></div>
+        <div style="font-size:9px;color:var(--silver);margin-top:3px">Service fee calculated at checkout</div>
+        <div class="btn">Checkout</div>
+        <small>You'll be redirected to ticketmelon.com</small>
+      </div>
+    </div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">08</div>
+</section>
+
+<!-- 9 -->
+<section class="s">
+  <div class="eye">Look &amp; feel</div>
+  <h2 style="font-size:36px">Three takes on chrome. Pick one in week 1.</h2>
+  <div class="cols c3" style="margin-top:32px">
+    <div class="ad">
+      <div class="top" style="background:#07080A">
+        <div class="blob" style="position:absolute;width:210px;height:190px;right:-50px;top:-60px"></div>
+        <span data-chrome="dark" style="display:block;font-family:Unbounded,sans-serif;font-size:32px;font-weight:800;line-height:1.05;color:#F4F6F8">Liquid<br>Chrome</span>
+      </div>
+      <div class="sw"><div style="background:#07080A"></div><div style="background:linear-gradient(90deg,#F4F6F8,#9DA3AD,#3B3F46)"></div><div style="background:#7FF3E1"></div><div style="background:#B9A6FF"></div><div style="background:#EEF0F3"></div></div>
+      <div class="bd"><h3>A · Liquid Chrome</h3><p>Y2K liquid metal, polished silver with a holographic sheen. Chrome logo lockup, holo-foil ticket cards.</p><div class="fit">Best for pop-electronic</div></div>
+    </div>
+    <div class="ad">
+      <div class="top" style="background:#0E0C0A">
+        <svg style="position:absolute;right:0;top:0" width="190" height="140" viewBox="0 0 190 140" fill="none"><g transform="translate(115 60)"><circle r="23" stroke="#8C7339" stroke-width="2"/><circle r="45" stroke="#7A6532" stroke-width="2"/><circle r="67" stroke="#5E4426" stroke-width="2"/><circle r="89" stroke="#47331D" stroke-width="2"/></g></svg>
+        <span data-chrome="brass" style="display:block;font-family:Syne,sans-serif;font-size:34px;font-weight:800;line-height:1.05;color:#D9B35C">Ancestral<br>Circuit</span>
+      </div>
+      <div class="sw"><div style="background:#0E0C0A"></div><div style="background:#D9B35C"></div><div style="background:#B0793E"></div><div style="background:#3F8F82"></div><div style="background:#E4572E"></div></div>
+      <div class="bd"><h3>B · Ancestral Circuit</h3><p>Metal as craft: hammered brass and bronze, gong-ring soundwaves, woven patterns by a Filipino artist.</p><div class="fit">Best for world / folk-electronic</div></div>
+    </div>
+    <div class="ad">
+      <div class="top" style="background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px),linear-gradient(160deg,#2A2D33,#0B0B0E 60%)">
+        <span style="position:absolute;top:22px;right:22px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5CE1E6;letter-spacing:.12em">SYS/ON-SALE ●</span>
+        <span data-chrome="steel" style="display:block;font-family:'Big Shoulders Display',Impact,sans-serif;font-size:50px;font-weight:900;line-height:.95;letter-spacing:.01em;color:#C9CCD3">SIGNAL<br><span data-fill="#FF3B30" style="color:#FF3B30">STEEL</span></span>
+      </div>
+      <div class="sw"><div style="background:#0B0B0E"></div><div style="background:#C9CCD3"></div><div style="background:#2A2D33"></div><div style="background:#FF3B30"></div><div style="background:#5CE1E6"></div></div>
+      <div class="bd"><h3>C · Signal Steel</h3><p>Cold and minimal: brushed steel, scan lines, notched ticket-stub cards and mono data labels.</p><div class="fit">Best for techno / house / EDM</div></div>
+    </div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">09</div>
+</section>
+
+<!-- 10 -->
+<section class="s dark">
+  <div class="eye">Data you own</div>
+  <h2>Know exactly what sells tickets</h2>
+  <div class="cols c3" style="margin-top:44px">
+    <div class="box"><div class="k">Funnel</div><h3 style="margin-top:14px">Every step tracked</h3><p>Visit → lineup → add to bag → checkout, in Google Analytics, Meta and TikTok. Your ads optimise toward real buyers.</p></div>
+    <div class="box"><div class="k">Codes</div><h3 style="margin-top:14px">Sales by channel</h3><p>A promo code per creator, ad or partner goes automatically to Ticketmelon. Sales reports show exactly who sold what.</p></div>
+    <div class="box"><div class="k">List</div><h3 style="margin-top:14px">Your own fans</h3><p>Waitlist and newsletter sign-ups, compliant with the Data Privacy Act. Announce the next lineup to people who already want in.</p></div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">10</div>
+</section>
+
+<!-- 11 -->
+<section class="s">
+  <div class="eye">Ticket money</div>
+  <h2>How Ticketmelon billing works</h2>
+  <div class="cols c2" style="grid-template-columns:1.15fr 1fr;margin-top:30px">
+    <table class="t" style="font-size:15px">
+      <tr><td>Service fee (PH)</td><td>≈ 4% + ₱20/ticket over ₱300</td></tr>
+      <tr><td>Payment processing</td><td>≈ 3% (cards, e-wallets)</td></tr>
+      <tr><td>Who pays</td><td>Buyer by default; you can absorb fees</td></tr>
+      <tr><td>Setup / monthly fee</td><td>None</td></tr>
+      <tr><td>Payouts</td><td>Bank transfer, schedule confirmed in writing</td></tr>
+      <tr><td>Refunds</td><td>4% of face value, paid by organizer</td></tr>
+    </table>
+    <div class="box" style="background:var(--black);border:none;color:var(--bright)">
+      <h3>Example: ₱3,000 ticket</h3>
+      <table class="t" style="font-size:15px;margin-top:6px">
+        <tr><td style="border-color:var(--dline)">You receive</td><td style="text-align:right;border-color:var(--dline)"><b>₱3,000</b></td></tr>
+        <tr><td style="border-color:var(--dline)">Service fee</td><td style="text-align:right;border-color:var(--dline)">≈ ₱140</td></tr>
+        <tr><td style="border-color:var(--dline)">Processing</td><td style="text-align:right;border-color:var(--dline)">≈ ₱94</td></tr>
+        <tr><td style="border-color:var(--dline)"><b>Fan pays</b></td><td style="text-align:right;border-color:var(--dline);color:var(--aqua)"><b>≈ ₱3,234</b></td></tr>
+      </table>
+      <p style="font-size:13px;margin-top:12px;color:var(--dmuted)">Based on Ticketmelon's last published rates. We confirm yours with your account manager. Our fee is separate, and ticket money never passes through us.</p>
+    </div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">11</div>
+</section>
+
+<!-- 12 -->
+<section class="s dark">
+  <div class="eye">Under the hood</div>
+  <h2>Fast, sturdy and ready for on-sale day</h2>
+  <div class="cols c4" style="margin-top:44px;gap:20px">
+    <div class="box"><div class="k">&lt;2.5s</div><h3 style="margin-top:12px">Load on 4G</h3><p>Pages ship almost no code; images are compressed automatically.</p></div>
+    <div class="box"><div class="k">10k+</div><h3 style="margin-top:12px">Fans at once</h3><p>Served from a global network with nearby servers in Singapore and Hong Kong. Nothing to crash at on-sale.</p></div>
+    <div class="box"><div class="k">0</div><h3 style="margin-top:12px">Card data on our side</h3><p>Payments stay with Ticketmelon, so there's less risk and no PCI burden.</p></div>
+    <div class="box"><div class="k">AA</div><h3 style="margin-top:12px">Accessible</h3><p>Meets WCAG 2.2: readable contrast, keyboard friendly, reduced motion.</p></div>
+  </div>
+  <p class="lead" style="font-size:16px;margin-top:34px">Stack: Astro website · Sanity editing system · Vercel hosting. These are modern, widely used tools, and you're not locked into any one provider.</p>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">12</div>
+</section>
+
+<!-- 13 -->
+<section class="s">
+  <div class="eye">Timeline</div>
+  <h2>Live in 6 weeks (Pro)</h2>
+  <div class="tl">
+    <div class="wk"><b>Week 1</b><p>Kickoff, moodboards, Ticketmelon checkout test</p><span class="gate">You pick a look</span></div>
+    <div class="wk"><b>Week 2</b><p>Home, tickets and bag designs</p><span class="gate">You approve</span></div>
+    <div class="wk"><b>Week 3</b><p>All pages designed; editor set up</p><span class="gate">You approve</span></div>
+    <div class="wk"><b>Week 4</b><p>Build, bag, tracking</p></div>
+    <div class="wk"><b>Week 5</b><p>Content, testing, load test</p><span class="gate">Staging review</span></div>
+    <div class="wk"><b>Week 6</b><p>Training and launch</p><span class="gate">Go live</span></div>
+  </div>
+  <p class="lead" style="font-size:17px;margin-top:50px">Tip: launch the site <b style="color:var(--ink)">2–3 weeks before tickets go on sale</b> to build the waitlist and warm up ad audiences.</p>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">13</div>
+</section>
+
+<!-- 14 -->
+<section class="s">
+  <div class="eye">Investment</div>
+  <h2>Three ways to start</h2>
+  <div class="cols c3" style="margin-top:40px;align-items:start">
+    <div class="pk"><h3>Essential</h3><div class="pr">₱45k</div><div class="sub">2–3 weeks · one-page site</div>
+      <ul><li>Buy buttons → Ticketmelon</li><li>Template design</li><li>GA4 + Meta Pixel</li><li>We do updates for you</li></ul></div>
+    <div class="pk rec"><span class="pill" style="position:absolute;top:-12px;left:30px">Recommended</span><h3>Pro</h3><div class="pr">₱120k</div><div class="sub">4–6 weeks · 7 pages + editor</div>
+      <ul><li>Ticket bag → pre-filled checkout</li><li>Reusable for every edition</li><li>Custom design</li><li>Full tracking + promo codes</li><li>Waitlist</li></ul></div>
+    <div class="pk"><h3>Premium</h3><div class="pr">₱280k</div><div class="sub">7–10 weeks · flagship</div>
+      <ul><li>Everything in Pro</li><li>Custom motion design</li><li>English + Filipino</li><li>Ads and recap pages, sales dashboard</li></ul></div>
+  </div>
+  <p style="font-size:14px;color:var(--muted);margin-top:22px">Ex-VAT. Care plans from ₱5,000/month. Full details are in the pricing proposal.</p>
+  <div class="tag"><b>Eckho Systems</b> · [Event] Website Proposal</div><div class="num">14</div>
+</section>
+
+<!-- 15 -->
+<section class="s dark">
+  <div class="blob" style="width:380px;height:350px;right:-180px;top:300px;transform:rotate(-20deg)"></div>
+  <div class="eye">Next steps</div>
+  <h2>Let's get [Event] its front door</h2>
+  <div class="cols c2" style="margin-top:40px;max-width:1000px">
+    <ul class="clean">
+      <li>Choose a package and sign the proposal</li>
+      <li>Introduce us to your Ticketmelon account manager</li>
+      <li>Send the content checklist: dates, venue, tiers, lineup, brand</li>
+      <li>Kickoff, and we start week 1</li>
+    </ul>
+    <div class="box">
+      <h3>We'll ask Ticketmelon</h3>
+      <p>Your exact fees in writing · payout schedule · approval for the pre-filled checkout link · pixel setup · live stock data access</p>
+    </div>
+  </div>
+  <div class="tag"><b>Eckho Systems</b> · [contact email] · [phone]</div><div class="num">15</div>
+</section>
+
+<script src="chrome.js"></script>
+</body>
+</html>

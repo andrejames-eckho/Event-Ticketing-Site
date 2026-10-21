@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Pending from '../components/Pending.astro';
+import { edition, faqs, faqCategories } from '../data/event.js';
+---
+<Base title="FAQ" description={`Questions about ${edition.title}.`}>
+  <header class="wrap page-head">
+    <p class="eyebrow">Help <Pending ref="Q5 copy" /></p>
+    <h1 class="display metal">FAQ</h1>
+  </header>
+
+  <section class="section top">
+    <div class="wrap layout">
+      <aside class="side">
+        <label class="field">
+          <span>Search questions</span>
+          <input class="input" type="search" data-faq-search placeholder="e.g. refund, ID, parking" />
+        </label>
+        <nav aria-label="Topics" class="topics">
+          {faqCategories.map((c) => <a href={`#faq-${c.key}`}>{c.label}</a>)}
+        </nav>
+        <p class="small muted">Still stuck? Email <a href="mailto:hello@example.com">hello@[domain]</a>. For order or payment issues, contact Ticketmelon support.</p>
+      </aside>
+      <div>
+        {faqCategories.map((c) => (
+          <section class="group" id={`faq-${c.key}`} data-faq-group aria-labelledby={`faq-h-${c.key}`}>
+            <h2 class="eyebrow" id={`faq-h-${c.key}`}>{c.label}</h2>
+            <div class="acc">
+              {faqs.filter((f) => f.cat === c.key).map((f) => (
+                <details data-faq-item><summary>{f.q}</summary><p class="acc-body">{f.a}</p></details>
+              ))}
+            </div>
+          </section>
+        ))}
+        <p class="muted" data-faq-empty hidden>No questions match. Try another word or email us.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top { padding-top: 16px; }
+  .layout { display: grid; grid-template-columns: 300px 1fr; gap: 56px; align-items: start; }
+  .side { position: sticky; top: 92px; display: grid; gap: 24px; }
+  .topics { display: grid; gap: 2px; }
+  .topics a { text-decoration: none; padding: 8px 0; color: var(--muted); }
+  .topics a:hover { color: var(--text); }
+  .side a { color: var(--text); }
+  .group { scroll-margin-top: 92px; }
+  .group + .group { margin-top: 40px; }
+  .group[hidden] { display: none; }
+  .group h2 { margin-bottom: 4px; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; gap: 32px; }
+    .side { position: static; }
+    .topics { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  }
+</style>

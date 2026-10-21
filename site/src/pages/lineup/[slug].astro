@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import Ph from '../../components/Ph.astro';
+import Pending from '../../components/Pending.astro';
+import ArtistCard from '../../components/ArtistCard.astro';
+import { edition, artists, stage, saleStates } from '../../data/event.js';
+
+export function getStaticPaths() {
+  return artists.map((artist) => ({ params: { slug: artist.slug }, props: { artist } }));
+}
+const { artist } = Astro.props;
+const day = edition.days.find((d) => d.key === artist.day);
+const sale = saleStates[edition.saleState];
+const more = artists.filter((a) => a.slug !== artist.slug && a.day === artist.day).slice(0, 4);
+const initials = artist.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
+---
+<Base title={artist.name} description={`${artist.name} at ${edition.title}, ${day.short}, ${stage.name}.`}>
+  <article class="wrap artist">
+    <a class="back small" href="/lineup">← Lineup</a>
+    <div class="layout">
+      <Ph desc="Press shot, portrait 4:5, min 1600px" ratio="4 / 5" class="photo">
+        <span class="initials display metal" aria-hidden="true">{initials}</span>
+      </Ph>
+      <div class="info">
+        <p class="eyebrow">{artist.billing === 'headliner' ? 'Headliner' : 'Artist'} · {artist.origin === 'PH' ? 'Philippines' : 'International'} <Pending ref="Q1" /></p>
+        <h1 class="display metal">{artist.name}</h1>
+        <dl class="facts">
+          <div><dt class="eyebrow">Day</dt><dd>{day.label}, {day.short}</dd></div>
+          <div><dt class="eyebrow">Set</dt><dd class="num">{artist.start}–{artist.end}</dd></div>
+          <div><dt class="eyebrow">Slot</dt><dd>{artist.billing === 'headliner' ? 'Headline set' : artist.closing ? 'Closing set' : 'Main Stage'}</dd></div>
+          <div><dt class="eyebrow">Sound</dt><dd>{artist.genre}</dd></div>
+        </dl>
+        <p class="bio">{artist.bio}</p>
+        <Ph kind="Embed" desc="Spotify artist player, loads on tap (no third-party script at page load)" ratio="5 / 2" />
+        <div class="cta">
+          <a class="btn" href={sale.ctaHref} data-sale-text="cta" data-sale-href>{sale.cta}</a>
+          <a class="btn btn-ghost" href="/schedule">See set times</a>
+        </div>
+      </div>
+    </div>
+
+    {more.length > 0 && (
+      <section class="more">
+        <h2 class="eyebrow">Also on {day.label}</h2>
+        <div class="grid">
+          {more.map((a) => <ArtistCard artist={a} days={edition.days} />)}
+        </div>
+      </section>
+    )}
+  </article>
+</Base>
+
+<style>
+  .artist { padding: 32px 0 80px; }
+  .back { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; color: var(--muted); }
+  .layout { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; margin-top: 16px; align-items: start; }
+  .layout :global(.photo) { place-items: center; position: sticky; top: 92px; }
+  .layout :global(.photo .ph-label) { position: absolute; left: 0; bottom: 0; }
+  .initials { font-size: clamp(80px, 14vw, 180px); }
+  .info { display: grid; gap: 24px; }
+  .info h1 { font-size: clamp(44px, 8vw, 104px); }
+  .facts { display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 12px 32px; margin: 0; }
+  .facts dd { margin: 4px 0 0; font-weight: 600; }
+  .bio { font-size: 18px; max-width: 60ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .more { margin-top: 80px; padding-top: 32px; border-top: 1px solid var(--line); }
+  .more .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; gap: 28px; }
+    .layout :global(.photo) { position: static; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .more .grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

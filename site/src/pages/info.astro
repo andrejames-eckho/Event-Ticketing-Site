@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import Ph from '../components/Ph.astro';
+import Rings from '../components/Rings.astro';
+import Pending from '../components/Pending.astro';
+import { edition, travel, stays, rules } from '../data/event.js';
+const sections = [
+  { id: 'venue', label: 'Venue' },
+  { id: 'getting-there', label: 'Getting there' },
+  { id: 'stay', label: 'Where to stay' },
+  { id: 'bring', label: 'What to bring' },
+  { id: 'access', label: 'Accessibility' },
+];
+---
+<Base title="Plan your trip" description={`Venue, travel, stays and rules for ${edition.title}.`}>
+  <header class="wrap page-head">
+    <p class="eyebrow">{edition.dateLong}</p>
+    <h1 class="display metal">Plan your trip</h1>
+    <p class="lead muted">Everything you need to get to {edition.venue.name} and have a good two days. <Pending ref="Q5 copy" /></p>
+  </header>
+
+  <nav class="wrap jump" aria-label="On this page">
+    {sections.map((s) => <a href={`#${s.id}`} class="tab">{s.label}</a>)}
+  </nav>
+
+  <section class="section" id="venue" aria-labelledby="venue-h">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">Venue</p>
+        <h2 id="venue-h" class="display">{edition.venue.name}</h2>
+        <p class="addr">{edition.venue.address} <Pending ref="Q1" /></p>
+        <dl class="facts">
+          <div><dt class="eyebrow">Gates</dt><dd>{edition.days.map((d) => `${d.short} · ${d.gates}`).join(' / ')}</dd></div>
+          <div><dt class="eyebrow">Age</dt><dd>{edition.ageLimit}, valid ID</dd></div>
+          <div><dt class="eyebrow">Capacity</dt><dd>{edition.venue.capacity}</dd></div>
+        </dl>
+        <a class="btn btn-ghost" href="https://maps.google.com/?q=Iloilo+City" rel="noopener">Open in Google Maps</a>
+      </div>
+      <Ph kind="Map" desc="Festival site map: stage, VIP deck, gates, toilets, water, first aid, food (client / production team)" ratio="4 / 3" class="map">
+        <Rings class="map-rings" count={6} />
+      </Ph>
+    </div>
+  </section>
+
+  <section class="section" id="getting-there" aria-labelledby="travel-h">
+    <div class="wrap">
+      <p class="eyebrow">Getting there</p>
+      <h2 id="travel-h" class="display">Into Iloilo</h2>
+      <div class="cards">
+        {travel.map((t) => (
+          <article class="card"><h3>{t.mode}</h3><p class="muted">{t.text}</p></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="stay" aria-labelledby="stay-h">
+    <div class="wrap">
+      <p class="eyebrow">Where to stay <Pending ref="Q1 partners" /></p>
+      <h2 id="stay-h" class="display">Stay close</h2>
+      <div class="cards three">
+        {stays.map((s) => (
+          <article class="stay">
+            <Ph desc="Hotel exterior or room" ratio="3 / 2" />
+            <h3>{s.name}</h3>
+            <p class="muted small">{s.note}</p>
+          </article>
+        ))}
+      </div>
+      <p class="muted small note">Dinagyang weekend fills Iloilo hotels early. Book as soon as you have tickets.</p>
+    </div>
+  </section>
+
+  <section class="section" id="bring" aria-labelledby="bring-h">
+    <div class="wrap">
+      <p class="eyebrow">Rules <Pending ref="client policy" /></p>
+      <h2 id="bring-h" class="display">What to bring</h2>
+      <div class="rules">
+        <div class="yes"><h3>Bring</h3><ul>{rules.allowed.map((r) => <li>{r}</li>)}</ul></div>
+        <div class="no"><h3>Leave at home</h3><ul>{rules.notAllowed.map((r) => <li>{r}</li>)}</ul></div>
+      </div>
+      <p class="muted small note">Full terms in the <a href="/legal/terms">terms of entry</a> and <a href="/legal/code-of-conduct">code of conduct</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="access" aria-labelledby="access-h">
+    <div class="wrap narrow">
+      <p class="eyebrow">Accessibility <Pending ref="client" /></p>
+      <h2 id="access-h" class="display">Everyone in</h2>
+      <p class="muted">Accessible entrance, viewing platform and toilets [to confirm]. Free companion ticket for guests who need one. Email [access contact] at least [X] days before and we’ll sort the details.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 32px; }
+  .jump .tab { display: inline-flex; align-items: center; text-decoration: none; }
+  h2.display { font-size: clamp(36px, 6vw, 72px); margin: 10px 0 24px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .addr { font-size: 18px; margin-bottom: 24px; }
+  .facts { display: grid; gap: 14px; margin: 0 0 28px; }
+  .facts dd { margin: 2px 0 0; font-weight: 600; }
+  .map { position: relative; }
+  .map :global(.map-rings) { position: absolute; inset: 10%; width: 80%; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cards.three { grid-template-columns: repeat(3, 1fr); }
+  .card { padding: 22px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); display: grid; gap: 8px; align-content: start; }
+  .card h3, .stay h3 { font-size: 18px; }
+  .stay { display: grid; gap: 8px; }
+  .note { margin-top: 20px; }
+  .note a { color: var(--text); }
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rules > div { padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); }
+  .rules h3 { margin-bottom: 14px; }
+  .rules ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rules li { display: flex; gap: 10px; }
+  .yes li::before { content: '✓'; color: var(--ok); font-weight: 700; }
+  .no li::before { content: '✕'; color: var(--cta); font-weight: 700; }
+  .narrow { max-width: 760px; }
+  @media (max-width: 860px) {
+    .two, .rules { grid-template-columns: 1fr; }
+    .cards, .cards.three { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 520px) { .cards, .cards.three { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,37 @@
+---
+// PLACEHOLDER logo (Q4): ring mark (gong / speaker cone) + wordmark set in the theme's display face.
+const { href = '/', size = 'md' } = Astro.props;
+---
+<a href={href} class:list={['logo', size]} aria-label="Chrome: Dinagyang, home">
+  <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+    <defs>
+      <linearGradient id="logo-metal" x1="0" y1="0" x2="0.2" y2="1">
+        <stop offset="0" style="stop-color: var(--metal-hi)" />
+        <stop offset=".46" style="stop-color: var(--metal-mid)" />
+        <stop offset=".52" style="stop-color: var(--metal-lo)" />
+        <stop offset="1" style="stop-color: var(--metal-hi)" />
+      </linearGradient>
+    </defs>
+    <circle cx="20" cy="20" r="18.25" fill="none" stroke="url(#logo-metal)" stroke-width="3.5" />
+    <circle cx="20" cy="20" r="11.5" fill="none" stroke="url(#logo-metal)" stroke-width="1.5" />
+    <circle cx="20" cy="20" r="6.5" fill="url(#logo-metal)" />
+  </svg>
+  <span class="words">
+    <span class="brand">Chrome</span>
+    <span class="title display metal">Dinagyang</span>
+  </span>
+</a>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
+  .mark { width: 34px; height: 34px; flex: none; }
+  .words { display: grid; line-height: 1; }
+  .brand {
+    font-family: var(--font-label); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px;
+  }
+  .title { font-size: 19px; }
+  .lg .mark { width: 64px; height: 64px; }
+  .lg .brand { font-size: 13px; }
+  .lg .title { font-size: 36px; }
+</style>

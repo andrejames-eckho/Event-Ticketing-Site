@@ -1,0 +1,27 @@
+---
+// Artist tile with a placeholder portrait (initials) until press photos arrive (Q1).
+const { artist, days } = Astro.props;
+const initials = artist.name.split(/\s+/).filter((w) => /^[A-Za-z0-9]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
+const day = days.find((d) => d.key === artist.day);
+---
+<a class:list={['artist', artist.billing]} href={`/lineup/${artist.slug}`}>
+  <div class="portrait ph" role="img" aria-label={`Photo placeholder: ${artist.name} press shot`}>
+    <span class="initials display metal" aria-hidden="true">{initials}</span>
+    <span class="ph-label"><strong>Photo</strong>Press shot</span>
+  </div>
+  <div class="meta">
+    <h3 class="name">{artist.name}</h3>
+    <p class="small muted num">{day.short} · {artist.start}</p>
+  </div>
+</a>
+
+<style>
+  .artist { display: grid; gap: 12px; text-decoration: none; }
+  .portrait { aspect-ratio: 4 / 5; place-items: center; }
+  .headliner .portrait { aspect-ratio: 4 / 3; }
+  .initials { font-size: clamp(56px, 9vw, 120px); }
+  .portrait .ph-label { position: absolute; left: 0; bottom: 0; }
+  .artist:hover .portrait { border-color: var(--metal-mid); }
+  .name { font-size: 18px; font-weight: 700; line-height: 1.25; }
+  .headliner .name { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(22px, 3vw, 32px); line-height: 1; }
+</style>

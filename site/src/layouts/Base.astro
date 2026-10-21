@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Bag from '../components/Bag.astro';
+import StickyBar from '../components/StickyBar.astro';
+import ReviewToolbar from '../components/ReviewToolbar.astro';
+import Waitlist from '../components/Waitlist.astro';
+import { event, edition, saleStates, tiers, ticketmelon } from '../data/event.js';
+
+const { title, description = event.tagline, waitlist = true } = Astro.props;
+const fullTitle = title ? `${title} · ${event.name}` : `${event.name} · ${edition.dateLabel} · ${edition.venue.name}`;
+
+// Everything the browser scripts need, in one blob.
+const config = {
+  eventUrl: ticketmelon.eventUrl,
+  status: ticketmelon.status,
+  mode: ticketmelon.mode,
+  saleState: edition.saleState,
+  saleStates,
+  tiers: tiers.map(({ key, name, pricePhp, ticketTypeId, maxQty, status }) => ({ key, name, pricePhp, ticketTypeId, maxQty, status })),
+};
+---
+<!doctype html>
+<html lang="en" data-theme="a" data-sale={edition.saleState}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" /><!-- design build: never index -->
+    <meta name="theme-color" content="#07080a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Review build loads all three G1 type pairings. After G1, keep only the chosen pair (self-hosted). -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@600;800&family=Inter:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;900&family=JetBrains+Mono:wght@500&display=swap"
+    />
+    <script is:inline>
+      // Restore review settings before paint (no flash of the wrong theme).
+      try {
+        const r = JSON.parse(localStorage.getItem('review-v1') || '{}');
+        const q = new URLSearchParams(location.search);
+        const theme = q.get('theme') || r.theme;
+        const sale = q.get('state') || r.sale;
+        if (theme) document.documentElement.dataset.theme = theme;
+        if (sale) document.documentElement.dataset.sale = sale;
+        if (r.ph === false) document.documentElement.dataset.placeholders = 'off';
+      } catch {}
+      // GTM stand-in: events land in dataLayer; real container added in build week 4.
+      window.dataLayer = window.dataLayer || [];
+    </script>
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    {waitlist && <Waitlist />}
+    <Footer />
+    <StickyBar />
+    <Bag />
+    <ReviewToolbar />
+
+    <script type="application/json" id="site-config" set:html={JSON.stringify(config)} />
+    <script>
+      import { initBag } from '../lib/bag.js';
+      import { initSite } from '../lib/site.js';
+      const config = JSON.parse(document.getElementById('site-config').textContent);
+      initSite(config);
+      initBag(config);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+---
+// Review-only controls for the G1/G2 walkthrough: art direction, sale state, placeholder markers.
+// Not rendered when PUBLIC_REVIEW=false (production).
+import { saleStates, ticketmelon } from '../data/event.js';
+const show = import.meta.env.PUBLIC_REVIEW !== 'false';
+const themes = [
+  { key: 'a', name: 'A · Liquid Chrome (current)' },
+  { key: 'b', name: 'B · Ancestral Circuit' },
+  { key: 'c', name: 'C · Signal Steel' },
+];
+---
+{show && (
+  <div class="review" data-review>
+    <div class="panel" id="review-panel" data-review-panel hidden>
+      <p class="title">Design review</p>
+      <fieldset>
+        <legend>Art direction (G1)</legend>
+        {themes.map((t) => (
+          <label class="opt"><input type="radio" name="review-theme" value={t.key} data-review-theme /> {t.name}</label>
+        ))}
+      </fieldset>
+      <label class="row">
+        <span>Sale state</span>
+        <select data-review-sale>
+          {Object.entries(saleStates).map(([k, v]) => <option value={k}>{v.label}</option>)}
+        </select>
+      </label>
+      <label class="opt"><input type="checkbox" data-review-ph checked /> Show placeholder tags</label>
+      <p class="meta">Ticketmelon: <strong>{ticketmelon.status}</strong> · mode {ticketmelon.mode}</p>
+      <button type="button" class="reset" data-review-reset>Reset bag + settings</button>
+    </div>
+    <button type="button" class="toggle" data-review-toggle aria-expanded="false" aria-controls="review-panel">
+      <span class="dot"></span> Review
+    </button>
+  </div>
+)}
+
+<style>
+  .review { position: fixed; z-index: 75; left: 16px; bottom: 16px; display: grid; gap: 8px; justify-items: start; font: 14px/1.4 system-ui, sans-serif; }
+  .toggle {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px;
+    border-radius: 999px; border: 1px solid #555; background: #111; color: #fff; cursor: pointer; font-weight: 600;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #ffcf70; }
+  .panel {
+    width: min(300px, calc(100vw - 32px)); padding: 16px; display: grid; gap: 12px;
+    background: #111; color: #eee; border: 1px solid #444; border-radius: 12px; box-shadow: 0 16px 40px rgb(0 0 0 / 0.6);
+  }
+  .panel[hidden] { display: none; }
+  .title { font-weight: 700; }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 4px; }
+  legend { color: #aaa; margin-bottom: 4px; }
+  .opt { display: flex; gap: 8px; align-items: center; min-height: 28px; cursor: pointer; }
+  .row { display: grid; gap: 4px; color: #aaa; }
+  select { min-height: 36px; background: #222; color: #fff; border: 1px solid #555; border-radius: 6px; padding: 0 8px; }
+  .meta { color: #aaa; font-size: 13px; }
+  .reset { justify-self: start; background: none; border: 0; color: #aaa; text-decoration: underline; cursor: pointer; padding: 0; }
+  @media (max-width: 860px) { .review { bottom: 84px; } }
+</style>

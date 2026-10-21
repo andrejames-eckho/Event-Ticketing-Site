@@ -1,0 +1,149 @@
+---
+// Tier card: status chip, price, phase ladder (docs/04 pattern 3), perks, and the buy control.
+// Buy control depends on Ticketmelon mode: stepper → Bag (Mode A) or one button → deep link (Mode B).
+const { tier, mode } = Astro.props;
+const php = (n) => `₱${n.toLocaleString('en-PH')}`;
+const chip = {
+  on_sale: tier.highlight ? ['popular', 'Most popular'] : ['on_sale', 'On sale'],
+  low_stock: ['low_stock', 'Selling fast'],
+  sold_out: ['sold_out', 'Sold out'],
+  coming_soon: ['coming_soon', 'Coming soon'],
+}[tier.status];
+const buyable = tier.status === 'on_sale' || tier.status === 'low_stock';
+---
+<article
+  class:list={['tier', tier.status, { highlight: tier.highlight }]}
+  data-tier={tier.key}
+  data-group={tier.group}
+  aria-labelledby={`tier-${tier.key}`}
+>
+  <div class="tier-top">
+    <p class="eyebrow">{tier.phase}</p>
+    <span class:list={['chip', chip[0]]}>{chip[1]}</span>
+  </div>
+
+  <h3 class="name" id={`tier-${tier.key}`}>{tier.name}</h3>
+  <p class="price num">{php(tier.pricePhp)}</p>
+
+  {tier.ladder && (
+    <ol class="ladder" aria-label="Price phases">
+      {tier.ladder.map((step) => (
+        <li class={step.state} aria-current={step.state === 'current' ? 'step' : undefined}>
+          <span>{step.label}</span>
+          <span class="num">{step.state === 'done' ? <s>{php(step.pricePhp)}</s> : php(step.pricePhp)}</span>
+          {step.state === 'done' && <span class="sr-only">sold out</span>}
+        </li>
+      ))}
+    </ol>
+  )}
+
+  <ul class="includes">
+    {tier.includes.map((perk) => <li>{perk}</li>)}
+  </ul>
+
+  <div class="tier-action">
+    {buyable && mode === 'deep_link' && (
+      <button class="btn btn-block" type="button" data-deep-link={tier.key}>Buy on Ticketmelon</button>
+    )}
+    {buyable && mode !== 'deep_link' && (
+      <div class="stepper" role="group" aria-label={`${tier.name} quantity`}>
+        <button type="button" data-qty-minus={tier.key} aria-label={`Remove one ${tier.name}`} disabled>−</button>
+        <output data-qty={tier.key} aria-live="polite" class="num">0</output>
+        <button type="button" data-qty-plus={tier.key} aria-label={`Add one ${tier.name}`}>+</button>
+      </div>
+    )}
+    {tier.status === 'sold_out' && <a class="btn btn-ghost btn-block" href="#waitlist">Join waitlist</a>}
+    {tier.status === 'coming_soon' && <a class="btn btn-ghost btn-block" href="#waitlist">Notify me</a>}
+    <p class="limit small muted">
+      {buyable && `Max ${tier.maxQty} per order`}
+      {tier.status === 'sold_out' && 'We’ll email you if tickets come back'}
+      {tier.status === 'coming_soon' && (tier.releaseNote || 'Release date soon')}
+    </p>
+  </div>
+
+  <!-- Sale-state overrides (docs/08 §6): shown instead of the action when the whole edition isn't selling -->
+  <div class="tier-locked" data-show-sale="announce">
+    <a class="btn btn-ghost btn-block" href="#waitlist">Get notified</a>
+    <p class="limit small muted">On sale [date]</p>
+  </div>
+  <div class="tier-locked" data-show-sale="soldout past">
+    <a class="btn btn-ghost btn-block" href="#waitlist">Join waitlist</a>
+  </div>
+</article>
+
+<style>
+  .tier {
+    position: relative; display: flex; flex-direction: column; gap: 10px;
+    padding: 24px; border-radius: var(--radius-lg);
+    background: var(--surface); border: 1px solid var(--line);
+  }
+  .tier-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 28px; }
+  .name { font-size: 22px; font-weight: 700; line-height: 1.2; margin-top: 4px; }
+  .price { font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+
+  .ladder { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; font-size: 14px; }
+  .ladder li { display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 4px; color: var(--muted); }
+  .ladder li.done { opacity: 0.7; }
+  .ladder li.current { background: var(--surface-2); color: var(--text); font-weight: 700; box-shadow: inset 3px 0 0 var(--metal-mid); }
+  .ladder li.next { opacity: 0.75; }
+
+  .includes { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; font-size: 15px; flex: 1; align-content: start; }
+  .includes li { display: flex; gap: 10px; }
+  .includes li::before { content: ''; flex: none; width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: var(--metal-mid); }
+
+  .tier-action { margin-top: 12px; display: grid; gap: 8px; }
+  /* no `display` here: visibility comes from the global [data-show-sale] helper */
+  .tier-locked { margin-top: 12px; }
+  .tier-locked .limit { margin-top: 8px; }
+  .limit { text-align: center; min-height: 1.6em; }
+
+  .stepper {
+    display: grid; grid-template-columns: 52px 1fr 52px; align-items: center;
+    border: 1px solid var(--line); border-radius: var(--pill); overflow: hidden; background: var(--bg);
+  }
+  .stepper button { height: 52px; border: 0; background: transparent; font-size: 24px; cursor: pointer; }
+  .stepper button:not(:disabled):hover { background: var(--surface-2); }
+  .stepper button:disabled { color: var(--line); cursor: not-allowed; }
+  .stepper output { text-align: center; font-weight: 700; font-size: 18px; }
+  .tier.has-qty .stepper { border-color: var(--cta); }
+
+  .tier.sold_out .price, .tier.sold_out .name { color: var(--muted); }
+  .tier.sold_out .price { text-decoration: line-through; text-decoration-thickness: 2px; }
+
+  /* Edition-level states hide the per-tier action */
+  :global(html[data-sale='announce']) .tier-action,
+  :global(html[data-sale='soldout']) .tier-action,
+  :global(html[data-sale='past']) .tier-action { display: none; }
+
+  /* ── Direction B: embossed brass plate ── */
+  :global([data-theme='b']) .tier {
+    background: linear-gradient(180deg, #1d1912, var(--surface));
+    box-shadow: inset 0 1px 0 rgb(255 241 196 / 0.08), inset 0 -1px 0 rgb(0 0 0 / 0.5);
+  }
+  :global([data-theme='b']) .tier.highlight {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(180deg, #221c13, var(--surface)) padding-box,
+      linear-gradient(160deg, var(--metal-hi), var(--metal-mid) 30%, var(--metal-lo) 60%, var(--metal-mid)) border-box;
+  }
+
+  /* ── Direction A: holo foil border ── */
+  :global([data-theme='a']) .tier.highlight {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, #fff, #b9a6ff, #7ff3e1, #3b3f46, #fff) border-box;
+  }
+
+  /* ── Direction C: notched ticket stub ── */
+  :global([data-theme='c']) .tier {
+    --notch: radial-gradient(circle 11px at 0 116px, transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 11px at 100% 116px, transparent 98%, #000) right / 51% 100% no-repeat;
+    -webkit-mask: var(--notch);
+    mask: var(--notch);
+    background: linear-gradient(var(--surface), var(--surface)) padding-box;
+  }
+  :global([data-theme='c']) .tier.highlight { border-color: var(--accent); }
+  :global([data-theme='c']) .stepper { border-radius: 0; }
+  :global([data-theme='c']) .price { font-family: var(--font-display); font-size: 48px; font-weight: 900; }
+</style>

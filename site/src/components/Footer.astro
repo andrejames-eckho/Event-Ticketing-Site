@@ -1,0 +1,70 @@
+---
+import Logo from './Logo.astro';
+import Pending from './Pending.astro';
+import { nav, socials, legalPages, partners, edition } from '../data/event.js';
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="partners">
+      <p class="eyebrow">Partners <Pending ref="Q1" /></p>
+      <ul>
+        {partners.map((p) => <li class:list={['partner', p.tier]}>{p.name}</li>)}
+      </ul>
+    </div>
+
+    <div class="cols">
+      <div class="brand-col">
+        <Logo size="lg" />
+        <p class="muted small">{edition.dateLong}<br />{edition.venue.name}, {edition.venue.city}</p>
+        <p class="official small">
+          <strong>Official tickets only on this site.</strong> Checkout by our ticketing partner Ticketmelon.
+        </p>
+      </div>
+      <nav aria-label="Footer">
+        <p class="eyebrow">Festival</p>
+        <ul>{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+      </nav>
+      <nav aria-label="Legal">
+        <p class="eyebrow">Legal</p>
+        <ul>{legalPages.map((l) => <li><a href={`/legal/${l.slug}`}>{l.title}</a></li>)}</ul>
+      </nav>
+      <div>
+        <p class="eyebrow">Follow <Pending ref="Q1" /></p>
+        <ul>{socials.map((s) => <li><a href={s.href}>{s.name}</a></li>)}</ul>
+        <p class="eyebrow contact">Contact</p>
+        <p class="small"><a href="mailto:hello@example.com">hello@[domain]</a></p>
+      </div>
+    </div>
+
+    <div class="legal-row small muted">
+      <span>© 2027 Chrome. All rights reserved.</span>
+      <span>Site by Eckho Systems</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line); padding: 56px 0 120px; background: var(--surface); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .partners { padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+  .partners ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 16px; }
+  .partner {
+    display: grid; place-items: center; height: 64px; padding: 0 12px;
+    border: 1px dashed var(--line); border-radius: var(--radius);
+    color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
+  }
+  .partner.presenting { grid-column: span 2; height: 64px; color: var(--text); border-style: solid; border-color: var(--metal-lo); }
+  .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 32px; padding: 40px 0; }
+  .cols a { text-decoration: none; color: var(--muted); display: inline-block; padding: 5px 0; }
+  .cols a:hover { color: var(--text); }
+  .cols .eyebrow { margin-bottom: 10px; }
+  .brand-col { display: grid; gap: 16px; align-content: start; }
+  .official { max-width: 36ch; color: var(--muted); }
+  .official strong { color: var(--text); }
+  .contact { margin-top: 20px; }
+  .legal-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding-top: 24px; border-top: 1px solid var(--line); }
+  @media (max-width: 820px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    .brand-col { grid-column: 1 / -1; }
+  }
+</style>

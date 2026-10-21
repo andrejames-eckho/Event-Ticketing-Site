@@ -1,0 +1,44 @@
+---
+import Pending from './Pending.astro';
+import Rings from './Rings.astro';
+// Form posts nowhere yet: ESP unknown (Q9). Consent copy must be reviewed against the client's privacy notice (R7).
+const { id = 'waitlist' } = Astro.props;
+---
+<section class="section waitlist" id={id} aria-labelledby={`${id}-title`}>
+  <Rings class="wl-rings" count={10} />
+  <div class="wrap wl-inner">
+    <div>
+      <p class="eyebrow">Stay in the loop <Pending ref="Q9" /></p>
+      <h2 class="display metal wl-title" id={`${id}-title`}>First to know</h2>
+      <p class="lead muted">Lineup drops, phase changes and presale codes. Straight to your inbox before anyone else.</p>
+    </div>
+    <form class="wl-form" data-waitlist novalidate>
+      <label class="field">
+        <span>Email</span>
+        <input class="input" type="email" name="email" autocomplete="email" required placeholder="you@email.com" />
+      </label>
+      <label class="check">
+        <input type="checkbox" name="consent" required />
+        <span>I agree to receive updates from Chrome and accept the <a href="/legal/privacy">privacy notice</a>. Unsubscribe anytime.</span>
+      </label>
+      <button class="btn btn-block" type="submit">Notify me</button>
+      <p class="wl-msg small" data-waitlist-msg role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .waitlist { overflow: hidden; }
+  .waitlist :global(.wl-rings) { position: absolute; width: 900px; right: -320px; top: 50%; translate: 0 -50%; opacity: 0.6; }
+  .wl-inner { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  .wl-title { font-size: clamp(44px, 8vw, 96px); margin: 12px 0 18px; }
+  .wl-form {
+    display: grid; gap: 16px; padding: 28px;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+  }
+  .wl-msg:empty { display: none; }
+  .wl-msg { color: var(--ok); }
+  .wl-msg.err { color: var(--warn); }
+  @media (max-width: 820px) { .wl-inner { grid-template-columns: 1fr; gap: 28px; } .wl-form { padding: 20px; } }
+</style>

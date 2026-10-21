@@ -1,0 +1,37 @@
+---
+// Mobile sticky ticket bar (docs/08 §5): after the hero, hidden while the tier grid is on screen.
+import { edition, saleStates, fromPrice } from '../data/event.js';
+const sale = saleStates[edition.saleState];
+---
+<div class="sticky" data-sticky aria-hidden="true">
+  <div class="info">
+    <p class="line1" data-sticky-default>
+      <strong class="num">From ₱{fromPrice.toLocaleString('en-PH')}</strong>
+      <span class="muted" data-sale-text="label">{sale.label}</span>
+    </p>
+    <p class="line1" data-sticky-bag hidden>
+      <strong class="num" data-sticky-total>₱0</strong>
+      <span class="muted"><span data-bag-count-text>0</span> in bag</span>
+    </p>
+  </div>
+  <a class="btn btn-sm" href={sale.ctaHref} data-sticky-cta data-sale-text="sticky" data-sale-href tabindex="-1">{sale.sticky}</a>
+  <button class="btn btn-sm" type="button" data-bag-open data-sticky-checkout hidden tabindex="-1">View bag</button>
+</div>
+
+<style>
+  .sticky {
+    position: fixed; z-index: 60; left: 12px; right: 12px; bottom: 12px;
+    display: none; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 10px 10px 18px; border-radius: var(--pill);
+    background: color-mix(in srgb, var(--surface-2) 92%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--line); box-shadow: 0 12px 32px rgb(0 0 0 / 0.5);
+    transform: translateY(140%); transition: transform 0.25s ease;
+  }
+  .sticky.show { transform: none; }
+  .line1 { display: grid; line-height: 1.25; font-size: 15px; }
+  .line1 .muted { font-size: 13px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 860px) { .sticky { display: flex; } }
+  :global([data-theme='c']) .sticky { border-radius: 0; }
+</style>

@@ -1,0 +1,177 @@
+---
+// Tickets page (docs/08 §3).
+import Base from '../layouts/Base.astro';
+import TierCard from '../components/TierCard.astro';
+import Pending from '../components/Pending.astro';
+import { edition, saleStates, tiers, ticketGroups, faqs, ticketmelon } from '../data/event.js';
+
+const sale = saleStates[edition.saleState];
+const ticketFaqs = faqs.filter((f) => f.cat === 'tickets' || f.cat === 'refunds');
+const compare = [
+  // PLACEHOLDER (Q3)
+  ['Entry both days', true, true],
+  ['Full lineup, both nights', true, true],
+  ['Free re-entry', true, true],
+  ['Express entry lane', false, true],
+  ['Raised VIP deck facing the stage', false, true],
+  ['Private bars + toilets', false, true],
+  ['Lockers', 'Add-on', 'Included'],
+];
+const mark = (v) => (v === true ? '✓' : v === false ? '—' : v);
+---
+<Base title="Tickets" description={`Tickets for ${edition.title}, ${edition.dateLabel}, ${edition.venue.name}.`}>
+  <header class="wrap page-head">
+    <p class="eyebrow">{edition.dateLong} · {edition.venue.name}, {edition.venue.city}</p>
+    <h1 class="display metal">Tickets</h1>
+  </header>
+
+  <div class="wrap">
+    <div class="banner" role="status">
+      <span class="live-dot" aria-hidden="true"></span>
+      <strong data-sale-text="status">{sale.status}</strong>
+      <span class="muted small">Prices go up each phase. <Pending ref="Q3" /></span>
+    </div>
+    <div data-show-sale="presale">
+      <p class="banner presale">
+        <strong>Presale code?</strong> Add tickets as usual, then enter the code in your bag. It’s applied on Ticketmelon.
+        <Pending tm ref="T3" />
+      </p>
+    </div>
+  </div>
+
+  <section class="section tickets" aria-label="Ticket types">
+    <div class="wrap">
+      <div class="tabs" data-filter="tiers" aria-label="Filter tickets">
+        <button class="tab" type="button" data-value="all" aria-pressed="true">All</button>
+        {ticketGroups.map((g) => <button class="tab" type="button" data-value={g.key} aria-pressed="false">{g.label}</button>)}
+      </div>
+      <div class="tiers" data-tier-grid>
+        {tiers.map((tier) => (
+          <div data-filter-item="tiers" data-keys={tier.group}>
+            <TierCard tier={tier} mode={ticketmelon.mode} />
+          </div>
+        ))}
+      </div>
+      <p class="sync small muted ph-only">
+        <Pending tm ref="T9" /> Stock status is set by hand in the CMS for now. If Ticketmelon shares an availability feed, “Selling fast” and “Sold out” update automatically.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="compare-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Compare</p>
+          <h2 id="compare-title" class="display">What’s included</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="compare">
+          <thead>
+            <tr><th scope="col"><span class="sr-only">Feature</span></th><th scope="col">2-Day GA</th><th scope="col">2-Day VIP</th></tr>
+          </thead>
+          <tbody>
+            {compare.map(([label, ga, vip]) => (
+              <tr>
+                <th scope="row">{label}</th>
+                <td class:list={{ no: ga === false }}>{mark(ga)}</td>
+                <td class:list={{ no: vip === false }}>{mark(vip)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-title" class="display">Three steps</h2>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><span class="display metal">01</span><h3>Pick your passes</h3><p class="muted">Add tickets to your bag here. Mix 2-day, day passes and add-ons.</p></li>
+        <li><span class="display metal">02</span><h3>Pay on Ticketmelon</h3><p class="muted">Your bag carries over to Ticketmelon, our official ticketing partner. Log in, pay with card or e-wallet.</p></li>
+        <li><span class="display metal">03</span><h3>Get your e-ticket</h3><p class="muted">QR tickets land in your email and Ticketmelon app. One QR per person at the gate.</p></li>
+      </ol>
+
+      <div class="fine">
+        <div>
+          <h3>Fees + VAT</h3>
+          <p class="muted">{edition.feeDisclosure} <Pending ref="Q8" /></p>
+        </div>
+        <div>
+          <h3>Age</h3>
+          <p class="muted">{edition.ageLimit}. Valid government ID at the gate.</p>
+        </div>
+        <div>
+          <h3>Refunds</h3>
+          <p class="muted">Non-refundable unless the event is cancelled. <a href="/legal/refunds">Refund policy</a></p>
+        </div>
+        <div>
+          <h3>Payment</h3>
+          <ul class="pay">{ticketmelon.paymentMethods.map((m) => <li>{m}</li>)}</ul>
+          <p class="muted small">Checkout powered by Ticketmelon <Pending tm ref="T5" /></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tfaq-title">
+    <div class="wrap faq-wrap">
+      <div>
+        <p class="eyebrow">Ticket questions</p>
+        <h2 id="tfaq-title" class="display">FAQ</h2>
+      </div>
+      <div class="acc">
+        {ticketFaqs.map((f) => <details><summary>{f.q}</summary><p class="acc-body">{f.a}</p></details>)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .banner {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+    padding: 16px 20px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface);
+  }
+  .banner.presale { margin-top: 12px; border-style: dashed; }
+  .live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); }
+  .tickets { padding-top: 40px; }
+  .tabs { margin-bottom: 24px; }
+  .tiers { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .tiers > div { display: grid; }
+  .tiers > div[hidden] { display: none; }
+  .sync { margin-top: 20px; max-width: 70ch; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-lg); }
+  .compare { width: 100%; border-collapse: collapse; min-width: 420px; }
+  .compare th, .compare td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--line); }
+  .compare tbody tr:last-child > * { border-bottom: 0; }
+  .compare thead th { font-family: var(--font-display); text-transform: uppercase; font-size: 18px; background: var(--surface); }
+  .compare tbody th { font-weight: 500; }
+  .compare td { text-align: center; font-weight: 700; color: var(--metal-hi); width: 25%; }
+  .compare td.no { color: var(--muted); font-weight: 400; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .steps li { padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); display: grid; gap: 8px; align-content: start; }
+  .steps span { font-size: 56px; }
+  .steps h3 { font-size: 20px; }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+
+  .fine { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
+  .fine h3 { font-size: 16px; margin-bottom: 6px; }
+  .fine a { color: var(--text); }
+  .pay { list-style: none; padding: 0; margin: 0 0 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pay li { padding: 2px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; }
+  @media (max-width: 860px) { .fine { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .fine { grid-template-columns: 1fr; } }
+
+  .faq-wrap { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  .faq-wrap h2 { font-size: clamp(44px, 7vw, 84px); margin-top: 10px; }
+  @media (max-width: 860px) { .faq-wrap { grid-template-columns: 1fr; gap: 20px; } }
+</style>

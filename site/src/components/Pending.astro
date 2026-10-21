@@ -1,0 +1,7 @@
+---
+// Visible marker for anything waiting on the client (Q*) or Ticketmelon (T*). Hidden by the review toolbar toggle.
+const { ref = '', tm = false } = Astro.props;
+---
+<span class:list={['ph-tag', { tm }]} title={ref ? `Open question ${ref} (docs/07)` : undefined}>
+  {tm ? 'Ticketmelon' : 'Placeholder'}{ref && ` · ${ref}`}<slot />
+</span>

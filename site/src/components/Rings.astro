@@ -1,0 +1,19 @@
+---
+// Concentric-ring motif (gong / kulintang boss / speaker cone). Decorative only.
+const { class: className = '', count = 9 } = Astro.props;
+const rings = Array.from({ length: count }, (_, i) => ({
+  r: 20 + i * (180 / count),
+  w: i % 3 === 0 ? 1.6 : 0.8,
+  dash: i % 4 === 1 ? '2 6' : i % 4 === 3 ? '14 4' : 'none',
+}));
+---
+<svg class:list={['rings', className]} viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+  {rings.map((ring) => (
+    <circle cx="200" cy="200" r={ring.r} fill="none" stroke-width={ring.w} stroke-dasharray={ring.dash} />
+  ))}
+</svg>
+
+<style>
+  .rings { pointer-events: none; }
+  .rings circle { stroke: var(--metal-mid); opacity: 0.32; }
+</style>

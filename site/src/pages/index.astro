@@ -1,0 +1,308 @@
+---
+// Event home: long-scroll funnel (docs/08 §2).
+import Base from '../layouts/Base.astro';
+import TierCard from '../components/TierCard.astro';
+import Rings from '../components/Rings.astro';
+import Ph from '../components/Ph.astro';
+import Pending from '../components/Pending.astro';
+import { event, edition, saleStates, tiers, artists, experiences, stats, travel, faqs, ticketmelon } from '../data/event.js';
+
+const sale = saleStates[edition.saleState];
+const headliners = artists.filter((a) => a.billing === 'headliner');
+const subs = artists.filter((a) => a.billing === 'sub');
+const support = artists.filter((a) => a.billing === 'support');
+const featuredTiers = tiers.filter((t) => ['weekend', 'vip', 'barkada'].includes(t.key));
+const topFaqs = faqs.filter((f) => f.top).slice(0, 6);
+const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city}`, 'One stage · Two nights', 'Metal · Light · Bass'];
+---
+<Base>
+  <!-- 1. Hero -->
+  <section class="hero" data-hero aria-labelledby="hero-title">
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-shape"></div>
+      <Rings class="art-rings" count={11} />
+    </div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow hero-meta">
+        <span>{edition.dateLong}</span>
+        <span>{edition.venue.name}, {edition.venue.city}</span>
+      </p>
+      <h1 id="hero-title" class="hero-title">
+        <span class="hero-brand">{event.brand}:</span>
+        <span class="display metal">{event.title}</span>
+      </h1>
+      <p class="lead hero-tag">{event.tagline} <Pending ref="Q5 copy" /></p>
+      <div class="hero-cta">
+        <a class="btn" href={sale.ctaHref} data-sale-text="cta" data-sale-href>{sale.cta}</a>
+        <a class="btn btn-ghost" href="/lineup">See lineup</a>
+      </div>
+      <p class="hero-status small">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span data-sale-text="status">{sale.status}</span>
+        <span class="muted num" data-countdown={edition.startDate}></span>
+      </p>
+      <p class="hero-ph ph-only"><Pending ref="Q4" /> Key visual: replace with client hero video (muted, &lt;2 MB) or photo + poster.</p>
+    </div>
+  </section>
+
+  <!-- 2. Strip -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip-track">
+      {[0, 1].map(() => strip.map((s) => <span class="display">{s}<i>✦</i></span>))}
+    </div>
+  </div>
+
+  <!-- 3. Lineup teaser -->
+  <section class="section" aria-labelledby="lineup-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Lineup · Phase 1 <Pending ref="Q1" /></p>
+          <h2 id="lineup-title" class="display">Who’s playing</h2>
+        </div>
+        <a class="more" href="/lineup">Full lineup <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="lu-head">
+        {headliners.map((a) => (
+          <li><a class="display metal" href={`/lineup/${a.slug}`}>{a.name}</a></li>
+        ))}
+      </ul>
+      <ul class="lu-sub">
+        {subs.map((a) => <li><a href={`/lineup/${a.slug}`}>{a.name}</a></li>)}
+      </ul>
+      <ul class="lu-support">
+        {support.map((a) => <li><a href={`/lineup/${a.slug}`}>{a.name}</a></li>)}
+      </ul>
+      <p class="muted small more-soon">+ more to be announced</p>
+    </div>
+  </section>
+
+  <!-- 4. Tickets preview -->
+  <section class="section" id="tickets" aria-labelledby="tickets-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Tickets · <span data-sale-text="label">{sale.label}</span> <Pending ref="Q3 prices" /></p>
+          <h2 id="tickets-title" class="display">Get your pass</h2>
+        </div>
+        <a class="more" href="/tickets">All tickets + day passes <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="tiers" data-tier-grid>
+        {featuredTiers.map((tier) => <TierCard tier={tier} mode={ticketmelon.mode} />)}
+      </div>
+      <div class="ticket-foot small muted">
+        <p>{edition.feeDisclosure}</p>
+        <p>Checkout by <strong>Ticketmelon</strong> · {ticketmelon.paymentMethods.join(' · ')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Experience -->
+  <section class="section" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">The experience</p>
+          <h2 id="exp-title" class="display">One stage, no clashes</h2>
+        </div>
+      </div>
+      <div class="exp">
+        {experiences.map((x, i) => (
+          <article class:list={['exp-card', { wide: i === 0 }]}>
+            <Ph desc={x.photo} ratio={i === 0 ? '16 / 10' : '4 / 5'} />
+            <h3 class="display">{x.title}</h3>
+            <p class="muted">{x.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Venue -->
+  <section class="section" aria-labelledby="venue-title">
+    <div class="wrap venue">
+      <div>
+        <p class="eyebrow">Getting there</p>
+        <h2 id="venue-title" class="display">{edition.venue.name}<br /><span class="metal">{edition.venue.city}</span></h2>
+        <p class="muted venue-addr">{edition.venue.address} <Pending ref="Q1" /></p>
+        <ul class="travel">
+          {travel.map((t) => (
+            <li><strong>{t.mode}</strong><span class="muted">{t.text}</span></li>
+          ))}
+        </ul>
+        <a class="btn btn-ghost" href="/info">Plan your trip</a>
+      </div>
+      <Ph kind="Map" desc="Static map image of the venue + gates (no heavy embed; link out to Google Maps)" ratio="1 / 1" class="map-ph">
+        <Rings class="map-rings" count={6} />
+        <span class="pin" aria-hidden="true"></span>
+      </Ph>
+    </div>
+  </section>
+
+  <!-- 7. Social proof / recap -->
+  <section class="section" id="recap" aria-labelledby="proof-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Last edition <Pending ref="Q1" /></p>
+          <h2 id="proof-title" class="display">Iloilo turned up</h2>
+        </div>
+      </div>
+      <dl class="stats">
+        {stats.map((s) => (
+          <div><dt class="muted">{s.label}</dt><dd class="display metal num">{s.value}</dd></div>
+        ))}
+      </dl>
+      <Ph kind="Video" desc="Aftermovie (YouTube, click-to-load facade so it costs nothing at page load)" ratio="16 / 9" class="video-ph">
+        <span class="play" aria-hidden="true">▶</span>
+      </Ph>
+    </div>
+  </section>
+
+  <!-- 8. FAQ -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="wrap faq-wrap">
+      <div>
+        <p class="eyebrow">Good to know</p>
+        <h2 id="faq-title" class="display">FAQ</h2>
+        <a class="btn btn-ghost btn-sm faq-all" href="/faq">All questions</a>
+      </div>
+      <div class="acc">
+        {topFaqs.map((f) => (
+          <details><summary>{f.q}</summary><p class="acc-body">{f.a}</p></details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero { position: relative; overflow: hidden; min-height: min(92svh, 900px); display: grid; align-items: end; padding: 120px 0 64px; }
+  .hero-art { position: absolute; inset: 0; pointer-events: none; }
+  .art-shape {
+    position: absolute; right: -8vw; top: 4%; width: min(78vw, 860px); aspect-ratio: 1;
+  }
+  .hero-art :global(.art-rings) { position: absolute; right: -8vw; top: 4%; width: min(78vw, 860px); }
+  .hero-inner { position: relative; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+  .hero-title { margin: 18px 0 20px; display: grid; }
+  .hero-brand {
+    font-family: var(--font-label); font-weight: 600; font-size: clamp(14px, 1.6vw, 18px);
+    letter-spacing: 0.4em; text-transform: uppercase; color: var(--text); margin-bottom: 6px;
+  }
+  .hero-title .display { font-size: clamp(40px, 11.6vw, 152px); }
+  .hero-tag { margin-bottom: 32px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-status { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 24px; }
+  .live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ok, #7cc6a4); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok, #7cc6a4) 25%, transparent); }
+  .hero-ph { margin-top: 20px; font-size: 13px; color: var(--muted); }
+  /* Scrim so text stays AA over the art */
+  .hero::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 45%, transparent 75%),
+      linear-gradient(0deg, var(--bg) 0%, transparent 40%);
+  }
+  .hero-inner { z-index: 1; }
+
+  /* A: liquid chrome blob */
+  :global([data-theme='a']) .art-shape {
+    border-radius: 43% 57% 61% 39% / 44% 41% 59% 56%;
+    background:
+      radial-gradient(circle at 32% 26%, rgb(255 255 255 / 0.95) 0 5%, transparent 22%),
+      radial-gradient(circle at 70% 78%, rgb(127 243 225 / 0.55), transparent 35%),
+      radial-gradient(circle at 78% 30%, rgb(185 166 255 / 0.6), transparent 32%),
+      conic-gradient(from 210deg at 52% 48%, #2c3038, #f4f6f8, #8b919b, #1a1d22, #dfe3e8, #b9a6ff, #3b3f46, #f4f6f8, #7ff3e1, #2c3038);
+    box-shadow: inset -30px -40px 80px rgb(0 0 0 / 0.55), inset 20px 30px 60px rgb(255 255 255 / 0.25);
+    animation: morph 18s ease-in-out infinite alternate;
+    opacity: 0.9;
+  }
+  @keyframes morph {
+    50% { border-radius: 58% 42% 38% 62% / 55% 60% 40% 45%; rotate: 8deg; }
+    100% { border-radius: 40% 60% 55% 45% / 38% 52% 48% 62%; rotate: -6deg; }
+  }
+  :global([data-theme='a']) .hero-art :global(.art-rings) { opacity: 0.4; }
+  /* B: hammered brass gong */
+  :global([data-theme='b']) .art-shape {
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, #fff1c4 0 4%, #d9b35c 9%, #6b4520 14%, transparent 15%),
+      repeating-radial-gradient(circle at 50% 50%, #3a2610 0 6px, #8a5d2b 10px, #d9b35c 13px, #6b4520 18px),
+      #3a2610;
+    box-shadow: inset -40px -50px 100px rgb(0 0 0 / 0.7), inset 30px 30px 80px rgb(255 241 196 / 0.15);
+    opacity: 0.75;
+  }
+  /* C: brushed steel disc with scan lines */
+  :global([data-theme='c']) .art-shape {
+    border-radius: 50%;
+    background:
+      repeating-linear-gradient(0deg, rgb(0 0 0 / 0.35) 0 1px, transparent 1px 4px),
+      conic-gradient(from 0deg, #2a2d33, #c9ccd3, #5b5f68, #e8eaee, #2a2d33, #9ea3ad, #2a2d33);
+    opacity: 0.55;
+  }
+
+  /* Strip */
+  .strip { border-block: 1px solid var(--line); overflow: hidden; padding: 14px 0; background: var(--surface); }
+  .strip-track { display: flex; gap: 0; width: max-content; animation: marquee 40s linear infinite; }
+  .strip span { font-size: clamp(18px, 2.4vw, 26px); white-space: nowrap; display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; }
+  .strip i { font-style: normal; color: var(--metal-mid); font-size: 0.7em; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* Lineup */
+  .lu-head, .lu-sub, .lu-support { list-style: none; margin: 0; padding: 0; }
+  .lu-head a, .lu-sub a, .lu-support a { text-decoration: none; }
+  .lu-head li { font-size: clamp(40px, 9vw, 112px); }
+  .lu-head li + li { margin-top: 4px; }
+  .lu-head a:hover { filter: brightness(1.2); }
+  .lu-sub { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 28px; }
+  .lu-sub a { font-size: clamp(22px, 3.4vw, 38px); font-weight: 700; font-family: var(--font-display); text-transform: uppercase; letter-spacing: var(--display-tracking); }
+  .lu-support { display: flex; flex-wrap: wrap; gap: 4px 22px; margin-top: 18px; }
+  .lu-support a { font-size: clamp(17px, 2vw, 22px); color: var(--muted); }
+  .lu-sub a:hover, .lu-support a:hover { color: var(--metal-hi); }
+  .more-soon { margin-top: 20px; }
+
+  /* Tickets */
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: stretch; }
+  .ticket-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 24px; }
+
+  /* Experience */
+  .exp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .exp-card { display: grid; gap: 10px; align-content: start; }
+  .exp-card.wide { grid-column: 1 / -1; grid-template-columns: 1.6fr 1fr; align-items: end; column-gap: 32px; }
+  .exp-card.wide :global(.ph) { grid-row: span 2; }
+  .exp-card h3 { font-size: clamp(24px, 3vw, 34px); margin-top: 6px; }
+  .exp-card.wide h3 { font-size: clamp(32px, 5vw, 56px); }
+  @media (max-width: 860px) {
+    .exp { grid-template-columns: 1fr 1fr; }
+    .exp-card.wide { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) { .exp { grid-template-columns: 1fr; } }
+
+  /* Venue */
+  .venue { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .venue h2 { font-size: clamp(40px, 7vw, 84px); margin: 10px 0 14px; }
+  .venue-addr { margin-bottom: 24px; }
+  .travel { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 14px; }
+  .travel li { display: grid; gap: 2px; padding-left: 16px; border-left: 2px solid var(--metal-lo); }
+  .map-ph { position: relative; }
+  .map-ph :global(.map-rings) { position: absolute; inset: 10%; width: 80%; }
+  .pin { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; translate: -50% -50%; border-radius: 50%; background: var(--cta); box-shadow: 0 0 0 8px color-mix(in srgb, var(--cta) 25%, transparent); }
+  @media (max-width: 860px) { .venue { grid-template-columns: 1fr; } }
+
+  /* Stats + video */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 0 0 32px; }
+  .stats div { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-lg); display: flex; flex-direction: column-reverse; gap: 6px; }
+  .stats dd { margin: 0; font-size: clamp(36px, 5vw, 64px); }
+  @media (max-width: 720px) { .stats { grid-template-columns: 1fr 1fr; } }
+  .video-ph { place-items: center; }
+  .video-ph .ph-label { position: absolute; left: 0; bottom: 0; }
+  .play {
+    width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; padding-left: 6px;
+    background: var(--text); color: var(--bg); font-size: 28px;
+  }
+
+  /* FAQ */
+  .faq-wrap { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+  .faq-wrap h2 { font-size: clamp(44px, 7vw, 84px); margin: 10px 0 20px; }
+  @media (max-width: 860px) { .faq-wrap { grid-template-columns: 1fr; gap: 20px; } .faq-all { display: none; } }
+</style>

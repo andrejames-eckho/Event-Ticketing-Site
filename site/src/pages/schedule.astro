@@ -1,0 +1,89 @@
+---
+// One stage = one running order per night (no stage columns, no clashes).
+import Base from '../layouts/Base.astro';
+import Pending from '../components/Pending.astro';
+import { edition, artists, stage, scheduleReleased } from '../data/event.js';
+
+// '3:00 PM' -> '15:00' so the gates marker matches the 24h set times
+const to24 = (t) => {
+  const [, h, m, pm] = t.match(/(\d+):(\d+)\s*(PM)?/i);
+  return `${String((+h % 12) + (pm ? 12 : 0)).padStart(2, '0')}:${m}`;
+};
+const setsFor = (day) => artists.filter((a) => a.day === day).sort((a, b) => a.start.localeCompare(b.start));
+---
+<Base title="Schedule" description={`Set times for ${edition.title}.`}>
+  <header class="wrap page-head">
+    <p class="eyebrow">Set times · {stage.name} <Pending ref="Q1 times" /></p>
+    <h1 class="display metal">Schedule</h1>
+    <p class="lead muted">One stage, back to back. You won’t miss a set. Times can change; check back on the day.</p>
+  </header>
+
+  {scheduleReleased ? (
+    <section class="section top" aria-label="Set times">
+      <div class="wrap">
+        <div class="tabs" data-filter="day" aria-label="Choose day">
+          {edition.days.map((d, i) => (
+            <button class="tab" type="button" data-value={d.key} aria-pressed={i === 0 ? 'true' : 'false'}>{d.label} · {d.short.split(' ').slice(1).join(' ')}</button>
+          ))}
+        </div>
+        {edition.days.map((d, i) => (
+          <div class="day" data-filter-item="day" data-keys={d.key} hidden={i > 0}>
+            <ol class="run" aria-label={`${d.label} running order`}>
+              <li class="marker"><span class="time num">{to24(d.gates)}</span><span class="what">Gates open</span></li>
+              {setsFor(d.key).map((a) => (
+                <li class:list={['set', a.billing, { closing: a.closing }]}>
+                  <span class="time num">{a.start}<span class="end">–{a.end}</span></span>
+                  <a class="what" href={`/lineup/${a.slug}`}>
+                    <span class:list={['name', { 'display metal': a.billing === 'headliner' }]}>{a.name}</span>
+                    {a.billing === 'headliner' && <span class="tag">Headliner</span>}
+                    {a.closing && <span class="tag">Closing</span>}
+                  </a>
+                </li>
+              ))}
+              <li class="marker"><span class="time num">00:30</span><span class="what">Music ends · last shuttles</span></li>
+            </ol>
+          </div>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <section class="section top">
+      <div class="wrap soon">
+        <p class="display metal">Set times drop soon</p>
+        <p class="muted">Join the list below and we’ll send them the moment they’re out.</p>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  .tabs { margin-bottom: 32px; }
+  .day[hidden] { display: none; }
+  .run { list-style: none; margin: 0; padding: 0; position: relative; max-width: 920px; }
+  /* vertical rail */
+  .run::before { content: ''; position: absolute; left: 132px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--metal-hi), var(--metal-lo)); opacity: 0.5; }
+  .run li { position: relative; display: grid; grid-template-columns: 116px 1fr; gap: 40px; align-items: center; padding: 18px 0; }
+  .run li::before { content: ''; position: absolute; left: 127px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: var(--bg); border: 2px solid var(--metal-mid); }
+  .run li + li { border-top: 1px solid var(--line); }
+  .time { font-family: var(--font-label); font-size: 15px; text-align: right; }
+  .end { color: var(--muted); }
+  .what { text-decoration: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .name { font-size: clamp(20px, 2.6vw, 28px); font-weight: 600; }
+  .sub .name { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; }
+  .headliner .name { font-size: clamp(34px, 6vw, 64px); }
+  .run li.headliner::before { background: var(--cta); border-color: var(--cta); width: 16px; height: 16px; left: 125px; margin-top: -8px; }
+  a.what:hover .name { color: var(--metal-hi); }
+  .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border: 1px solid var(--metal-mid); border-radius: var(--pill); color: var(--metal-hi); }
+  .marker { color: var(--muted); }
+  .marker .what { font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .run li.marker::before { border-style: dashed; }
+  .soon p.display { font-size: clamp(36px, 7vw, 80px); margin-bottom: 12px; }
+  @media (max-width: 640px) {
+    .run::before { left: 6px; }
+    .run li { grid-template-columns: 1fr; gap: 4px; padding: 14px 0 14px 32px; }
+    .run li::before { left: 1px; }
+    .run li.headliner::before { left: -1px; }
+    .time { text-align: left; }
+  }
+</style>

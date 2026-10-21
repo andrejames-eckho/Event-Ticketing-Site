@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArtistCard from '../../components/ArtistCard.astro';
+import Pending from '../../components/Pending.astro';
+import { edition, artists } from '../../data/event.js';
+
+const order = { headliner: 0, sub: 1, support: 2 };
+const sorted = [...artists].sort((a, b) => order[a.billing] - order[b.billing]);
+const tiersOf = (b) => sorted.filter((a) => a.billing === b);
+---
+<Base title="Lineup" description={`Lineup for ${edition.title}.`}>
+  <header class="wrap page-head">
+    <p class="eyebrow">{edition.dateLong} <Pending ref="Q1 lineup" /></p>
+    <h1 class="display metal">Lineup</h1>
+    <p class="lead muted">Phase 1 announcement. More acts drop [date].</p>
+  </header>
+
+  <section class="section top" aria-label="Artists">
+    <div class="wrap">
+      <div class="tabs" data-filter="lineup" aria-label="Filter by day">
+        <button class="tab" type="button" data-value="all" aria-pressed="true">Both days</button>
+        {edition.days.map((d) => <button class="tab" type="button" data-value={d.key} aria-pressed="false">{d.short}</button>)}
+      </div>
+
+      <!-- Poster view: typography first (docs/04 pattern 7) -->
+      <div class="poster">
+        {['headliner', 'sub', 'support'].map((b) => (
+          <ul class:list={['row', b]}>
+            {tiersOf(b).map((a) => (
+              <li data-filter-item="lineup" data-keys={a.day}>
+                <a href={`/lineup/${a.slug}`} class:list={{ 'display metal': b === 'headliner' }}>{a.name}</a>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+
+      <h2 class="eyebrow grid-title">All artists</h2>
+      <div class="grid">
+        {sorted.map((a) => (
+          <div data-filter-item="lineup" data-keys={a.day} class:list={['cell', a.billing]}>
+            <ArtistCard artist={a} days={edition.days} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top { padding-top: 24px; }
+  .tabs { margin-bottom: 40px; }
+  .poster { text-align: center; display: grid; gap: 22px; padding: 40px 0 64px; border-bottom: 1px solid var(--line); }
+  .row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; }
+  .row a { text-decoration: none; }
+  .row li[hidden] { display: none; }
+  .headliner { flex-direction: column; gap: 6px; }
+  .headliner a { font-size: clamp(44px, 10vw, 128px); }
+  .sub a { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; font-size: clamp(24px, 4vw, 44px); }
+  .support a { font-size: clamp(18px, 2.2vw, 24px); color: var(--muted); }
+  .row a:hover { color: var(--metal-hi); }
+  .grid-title { margin: 56px 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px 20px; }
+  .cell.headliner { grid-column: span 2; }
+  .cell[hidden] { display: none; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>

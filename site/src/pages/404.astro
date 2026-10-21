@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found" waitlist={false}>
+  <section class="wrap nf">
+    <p class="eyebrow">404</p>
+    <h1 class="display metal">Off the map</h1>
+    <p class="lead muted">This page doesn’t exist. The festival does.</p>
+    <div class="cta"><a class="btn" href="/tickets">Get tickets</a><a class="btn btn-ghost" href="/">Home</a></div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding: 120px 0; display: grid; gap: 20px; justify-items: start; }
+  .nf h1 { font-size: clamp(56px, 12vw, 160px); }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+</style>

@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Pending from '../../components/Pending.astro';
+import { legalPages } from '../../data/event.js';
+
+export function getStaticPaths() {
+  return legalPages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+const { page } = Astro.props;
+---
+<Base title={page.title}>
+  <article class="wrap-narrow legal">
+    <p class="eyebrow">Legal <Pending ref="client legal" /></p>
+    <h1 class="display">{page.title}</h1>
+    <p class="muted">Last updated [date]</p>
+    <div class="body">
+      <p>Placeholder. The client’s legal team supplies this text. {page.slug === 'privacy' && 'It must cover the Data Privacy Act of 2012: what we collect on this site (waitlist emails, analytics cookies), why, how long we keep it, and how to ask for deletion. Ticket buyer data is handled by Ticketmelon under its own privacy policy.'}</p>
+      <h2>Section heading</h2>
+      <p>Body copy for this section. Plain language, short paragraphs, one idea each.</p>
+      <h2>Section heading</h2>
+      <p>Body copy for this section.</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal { padding: 64px 0 96px; display: grid; gap: 16px; }
+  .legal h1 { font-size: clamp(36px, 6vw, 64px); }
+  .body { display: grid; gap: 16px; margin-top: 24px; max-width: 68ch; }
+  .body h2 { font-size: 22px; margin-top: 16px; }
+</style>

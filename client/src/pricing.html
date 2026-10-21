@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[Event] Website — Pricing Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root{
+    --black:#07080A; --graphite:#121419; --gunmetal:#1C1F25; --steel:#3B3F46; --silver:#9DA3AD; --bright:#F4F6F8;
+    --paper:#EEF0F3; --card:#FFFFFF; --ink:#0D0F12; --muted:#5B616B; --line:#D5D9DF;
+    --aqua:#7FF3E1; --aqua-ink:#0B7A6C; --lilac:#B9A6FF; --lilac-ink:#5B45C9;
+    /* chrome: display only (headings, logo, badges) */
+    --chrome-dark:linear-gradient(180deg,#FFFFFF 0%,#E8EBEF 36%,#9DA3AD 49%,#3B3F46 51%,#C9CED5 74%,#F4F6F8 100%);
+    --chrome-light:linear-gradient(180deg,#6B717B 0%,#22262C 46%,#07080A 50%,#4A4F57 70%,#8A9099 100%);
+    --chrome-rule:linear-gradient(90deg,#3B3F46,#F4F6F8 30%,#9DA3AD 55%,#F4F6F8 75%,#3B3F46);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;padding:18mm 18mm 16mm;position:relative;page-break-after:always;overflow:hidden;background:var(--paper)}
+  .page:before{content:"";position:absolute;left:0;right:0;top:0;height:2.2mm;background:var(--chrome-rule)}
+  .page:last-child{page-break-after:auto}
+  h1,h2,h3{font-family:Unbounded,Inter,sans-serif;letter-spacing:-.02em}
+  h2{font-size:20pt;line-height:1.12;font-weight:800;margin-bottom:4mm;color:var(--ink)}
+  h3{font-size:11pt;font-weight:600;margin:6mm 0 2mm;color:var(--ink)}
+  p{margin-bottom:2.5mm}
+  .eyebrow{display:flex;align-items:center;gap:2.5mm;font-size:7.5pt;letter-spacing:.18em;text-transform:uppercase;color:var(--aqua-ink);font-weight:700;margin-bottom:3mm}
+  .eyebrow:before{content:"";width:8mm;height:.6mm;background:var(--chrome-rule)}
+  .muted{color:var(--muted)}
+  .foot{position:absolute;left:18mm;right:18mm;bottom:9mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:1px solid var(--line);padding-top:2.5mm;letter-spacing:.04em}
+  .foot b{font-family:Unbounded,sans-serif;font-weight:600;color:var(--ink);letter-spacing:.06em}
+  table{width:100%;border-collapse:collapse;font-size:8.8pt}
+  th,td{text-align:left;padding:2.1mm 2.4mm;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:7pt;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+  td.num,th.num{text-align:right;white-space:nowrap}
+  .note{background:var(--black);color:#D7DBE0;border-radius:3mm;padding:3.5mm 4.5mm;font-size:8.8pt;margin:4mm 0;position:relative;border:1px solid var(--steel)}
+  .note b{color:var(--bright)}
+  .note:before{content:"";position:absolute;left:0;top:3mm;bottom:3mm;width:.9mm;background:var(--aqua);border-radius:0 1mm 1mm 0}
+
+  /* cover */
+  .cover{background:var(--black);color:var(--bright);padding:22mm 20mm}
+  .cover:before{display:none}
+  .blob{position:absolute;background:url(assets/blob.png) center/100% 100% no-repeat}
+  .cover .blob.b1{right:-44mm;top:-46mm;width:150mm;height:132mm;transform:rotate(-14deg)}
+  .cover .blob.b2{right:26mm;top:178mm;width:34mm;height:30mm;transform:rotate(30deg)}
+  .cover .horizon{position:absolute;left:0;right:0;top:168mm;height:.5mm;background:var(--chrome-rule);opacity:.55}
+  .cover h1{font-size:40pt;line-height:1.02;font-weight:800;margin-top:66mm;max-width:135mm;position:relative;color:var(--bright)}
+  .cover .sub{font-size:12pt;margin-top:6mm;max-width:118mm;color:#C9CED5;position:relative}
+  .cover .meta{position:absolute;left:20mm;bottom:20mm;right:20mm;display:grid;grid-template-columns:repeat(3,1fr);gap:6mm;font-size:8pt;color:var(--silver);letter-spacing:.06em;text-transform:uppercase;border-top:1px solid var(--steel);padding-top:4mm}
+  .cover .meta b{display:block;color:var(--bright);font-size:10pt;margin-top:1mm;text-transform:none;letter-spacing:0;font-weight:600}
+  .lockup{position:relative;display:flex;align-items:center;gap:3mm;font-family:Unbounded,sans-serif;font-size:8.5pt;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+  .lockup .chrome{color:var(--bright);font-weight:800}
+  .lockup .x{color:var(--aqua)}
+  .lockup .ag{color:var(--silver)}
+
+  /* packages */
+  .pk{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;margin-top:5mm}
+  .card{border:1px solid var(--line);border-radius:4mm;padding:5mm;background:var(--card);position:relative}
+  .card.rec{background:var(--black);color:#D7DBE0;border:1.2px solid transparent;
+    background-image:linear-gradient(var(--black),var(--black)),linear-gradient(160deg,#F4F6F8,#3B3F46 40%,#9DA3AD 60%,#F4F6F8);background-origin:border-box;background-clip:padding-box,border-box}
+  .badge{position:absolute;top:-3.2mm;left:5mm;background:linear-gradient(180deg,#FFFFFF,#C9CED5 48%,#9DA3AD 52%,#E6E9ED);color:var(--black);font-size:6.8pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:1mm 2.6mm;border-radius:2mm;border:1px solid #7C838D}
+  .card h3{margin:0 0 1mm;font-size:13.5pt;font-weight:800}
+  .card.rec h3{color:var(--bright)}
+  .price{font-family:Unbounded,sans-serif;font-size:16pt;font-weight:600;margin:2mm 0 0;line-height:1.15;color:var(--ink)}
+  .card.rec .price{color:var(--bright)}
+  .price small{display:block;font-family:Inter;font-size:7.5pt;font-weight:500;color:var(--muted);margin-top:.5mm}
+  .card.rec .price small,.card.rec .usd,.card.rec .fit{color:var(--silver)}
+  .usd{font-size:8pt;color:var(--muted);margin-bottom:3mm}
+  .card .time{display:inline-block;font-size:7.5pt;font-weight:700;color:var(--aqua-ink);margin-bottom:3mm;letter-spacing:.06em;text-transform:uppercase}
+  .card.rec .time{color:var(--aqua)}
+  .card ul{list-style:none;font-size:8.5pt}
+  .card li{padding:1.2mm 0 1.2mm 4.5mm;position:relative;border-top:1px dashed var(--line)}
+  .card.rec li{border-color:var(--steel)}
+  .card li:before{content:"";position:absolute;left:0;top:2.6mm;width:2mm;height:2mm;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#9DA3AD 55%,#3B3F46)}
+  .card.rec li b{color:var(--bright)}
+  .card li.x{color:#A0A6AF}.card li.x:before{background:#DDE0E5}
+  .fit{font-size:8pt;margin-top:3mm;color:var(--muted);font-style:italic}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+  .steps{counter-reset:s;list-style:none}
+  .steps li{counter-increment:s;padding:2mm 0 2mm 10mm;position:relative;border-bottom:1px solid var(--line)}
+  .steps li:before{content:counter(s);position:absolute;left:0;top:2mm;width:6.5mm;height:6.5mm;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3B3F46,#07080A 70%);border:1px solid #9DA3AD;color:var(--bright);font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .tick{color:var(--aqua-ink);font-weight:700}
+  .dash{color:#AEB3BA}
+  .sig{display:grid;grid-template-columns:1fr 1fr;gap:10mm;margin-top:10mm}
+  .sig div{border-top:1px solid var(--ink);padding-top:2mm;font-size:8.5pt;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="page cover">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="horizon"></div>
+  <div class="lockup"><span class="ag">Eckho Systems</span><span class="x">×</span><span class="chrome" data-chrome="dark">Chrome</span></div>
+  <h1>[Event] Official Website</h1>
+  <p class="sub">Pricing proposal for a festival website that sells tickets through Ticketmelon, built for fans in the Philippines.</p>
+  <div class="meta">
+    <div>Prepared for<b>Chrome</b></div>
+    <div>Date<b>19 October 2026</b></div>
+    <div>Valid until<b>18 November 2026</b></div>
+  </div>
+</section>
+
+<!-- 2 SUMMARY -->
+<section class="page">
+  <div class="eyebrow">Summary</div>
+  <h2>One front door for every ticket sale</h2>
+  <p>Today fans go from an Instagram or TikTok post to a bare Ticketmelon page. That page can take payment, but it can't tell the festival's story, answer the questions that stop people buying, or show you which posts and ads sold tickets.</p>
+  <p>We build <b>[Event]'s own website</b>: fast on mobile, easy for your team to edit, and reusable for every future edition. Fans pick their tickets and quantities on <i>your</i> site, then land on Ticketmelon with their order already filled in and pay with GCash, Maya or card. This is how Wonderfruit, one of Southeast Asia's best-known festivals, sells through Ticketmelon today.</p>
+
+  <h3>What you get</h3>
+  <table>
+    <tr><td style="width:38%"><b>Your own festival website</b></td><td>Lineup, tickets, schedule, venue and travel info, FAQ, past editions, news. Made for phones first.</td></tr>
+    <tr><td><b>Ticket bag → Ticketmelon</b></td><td>Fans choose tiers and quantities on your site; checkout opens Ticketmelon with the order and promo code already in.</td></tr>
+    <tr><td><b>Easy editing</b></td><td>Change prices, sold-out badges, lineup and FAQ yourself. Schedule lineup drops to go live at an exact time.</td></tr>
+    <tr><td><b>Know what sells</b></td><td>Google Analytics, Meta and TikTok tracking from first visit to checkout, plus a promo code per channel so you can see sales by source.</td></tr>
+    <tr><td><b>Your own fan list</b></td><td>A waitlist and newsletter sign-up that you own, compliant with the Data Privacy Act.</td></tr>
+    <tr><td><b>Built for on-sale day</b></td><td>Pages are served from a global network and won't crash when thousands of fans arrive at once.</td></tr>
+  </table>
+
+  <div class="note"><b>Our recommendation: the Pro package (₱120,000).</b> It is the smallest package that includes the editing system and the ticket bag, which a site meant to serve many editions needs.</div>
+  <h3>Packages at a glance</h3>
+  <table>
+    <tr><th></th><th>Essential</th><th>Pro</th><th>Premium</th></tr>
+    <tr><td>Ticket bag with pre-filled checkout</td><td class="dash">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+    <tr><td>Your team edits content</td><td class="dash">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+    <tr><td>Reusable for future editions/events</td><td class="dash">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+    <tr><td>Promo code per channel</td><td class="dash">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+    <tr><td>Meta Conversions API, TikTok</td><td class="dash">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+    <tr><td>Filipino language</td><td class="dash">—</td><td class="dash">add-on</td><td class="tick">✓</td></tr>
+  </table>
+  <div class="foot"><span><b>ECKHO SYSTEMS</b> · [Event] Website Proposal for Chrome</span><span>02</span></div>
+</section>
+
+<!-- 3 PACKAGES -->
+<section class="page">
+  <div class="eyebrow">Packages</div>
+  <h2>Choose your package</h2>
+  <p class="muted">All prices in Philippine pesos, exclusive of VAT. USD is for reference at ₱60 = $1.</p>
+  <div class="pk">
+    <div class="card">
+      <h3>Essential</h3>
+      <div class="price">₱45,000 <small>one-time</small></div>
+      <div class="usd">≈ US$750</div>
+      <div class="time">2–3 weeks</div>
+      <ul>
+        <li>One-page festival site</li>
+        <li>Buy buttons → Ticketmelon event page</li>
+        <li>Template design in your brand</li>
+        <li>Google Analytics + Meta Pixel</li>
+        <li>Basic SEO + share images</li>
+        <li>1 revision round</li>
+        <li class="x">No self-editing (we update for you)</li>
+        <li class="x">No ticket bag</li>
+      </ul>
+      <p class="fit">For a single small event that needs to look official fast.</p>
+    </div>
+    <div class="card rec">
+      <span class="badge">Recommended</span>
+      <h3>Pro</h3>
+      <div class="price">₱120,000 <small>one-time</small></div>
+      <div class="usd">≈ US$2,000</div>
+      <div class="time">4–6 weeks</div>
+      <ul>
+        <li>7 pages: Home, Tickets, Lineup, Schedule, Info, FAQ, Contact</li>
+        <li><b>Ticket bag → pre-filled Ticketmelon checkout</b></li>
+        <li>Self-editing system for many events and editions</li>
+        <li>Custom design, 1 art direction</li>
+        <li>Full tracking: GA4, GTM, Meta Pixel + Conversions API, TikTok, cookie consent</li>
+        <li>Waitlist / newsletter sign-up</li>
+        <li>Event SEO, sitemap, share images</li>
+        <li>2 revision rounds per stage</li>
+      </ul>
+      <p class="fit">For a festival brand that runs every year.</p>
+    </div>
+    <div class="card">
+      <h3>Premium</h3>
+      <div class="price">₱280,000 <small>one-time</small></div>
+      <div class="usd">≈ US$4,650</div>
+      <div class="time">7–10 weeks</div>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Fully custom design + motion; 3 art directions</li>
+        <li>English + Filipino</li>
+        <li>Ads landing page</li>
+        <li>Post-event recap page</li>
+        <li>Sales dashboard (site clicks + Ticketmelon sales)</li>
+        <li>Live sold-out sync if Ticketmelon grants data access*</li>
+        <li>3 revision rounds per stage</li>
+      </ul>
+      <p class="fit">For a flagship festival that competes regionally.</p>
+    </div>
+  </div>
+  <p class="muted" style="font-size:7.8pt;margin-top:4mm">* Depends on Ticketmelon approving a data feed. If they charge for it, that cost is passed through.</p>
+
+  <div class="foot"><span><b>ECKHO SYSTEMS</b> · [Event] Website Proposal for Chrome</span><span>03</span></div>
+</section>
+
+<!-- 4 ONGOING -->
+<section class="page">
+  <div class="eyebrow">After launch</div>
+  <h2>Care plans and add-ons</h2>
+  <h3>Monthly care plans <span class="muted" style="font-family:Inter;font-size:9pt;font-weight:400">(optional, cancel with 30 days' notice)</span></h3>
+  <table>
+    <tr><th>Plan</th><th class="num">Per month</th><th>Includes</th></tr>
+    <tr><td><b>Care</b></td><td class="num">₱5,000</td><td>Hosting oversight, updates, backups, uptime monitoring, 2 hours of small edits</td></tr>
+    <tr><td><b>Growth</b></td><td class="num">₱12,000</td><td>Care + 6 hours of content/landing-page work + monthly sales and traffic report</td></tr>
+    <tr><td><b>On-Sale</b></td><td class="num">₱25,000</td><td>For ticket-drop months: on call on sale days, same-day changes, tracking checks, checkout link monitoring</td></tr>
+  </table>
+
+  <h3>Next edition refresh</h3>
+  <p>New year, new look: new hero, lineup, tiers and phases, and the previous edition moved to the archive. <b>35–50% of the original build</b> depending on how much changes (Pro: about ₱42,000–60,000).</p>
+
+  <h3>Add-ons</h3>
+  <table>
+    <tr><th>Add-on</th><th class="num">Price</th></tr>
+    <tr><td>Tracking pack (for Essential)</td><td class="num">₱15,000</td></tr>
+    <tr><td>Extra language (e.g. Filipino)</td><td class="num">₱30,000 + translation</td></tr>
+    <tr><td>Post-event recap page</td><td class="num">₱20,000</td></tr>
+    <tr><td>Ads landing page</td><td class="num">₱18,000</td></tr>
+    <tr><td>Rush delivery</td><td class="num">+30–50%</td></tr>
+    <tr><td>Copywriting, photography, video</td><td class="num">Quoted separately</td></tr>
+  </table>
+
+  <h3>Running costs (paid to providers, not us)</h3>
+  <table>
+    <tr><th>Item</th><th class="num">Approx.</th><th>Notes</th></tr>
+    <tr><td>Domain (.com / .ph)</td><td class="num">₱800–3,500 / yr</td><td>Registered in your name</td></tr>
+    <tr><td>Hosting (Vercel Pro)</td><td class="num">≈ ₱1,200 / mo</td><td>Global network, handles on-sale traffic</td></tr>
+    <tr><td>Editing system (Sanity)</td><td class="num">Free tier</td><td>Paid tier only if you need many editors</td></tr>
+    <tr><td>Email tool (e.g. Brevo, Mailchimp)</td><td class="num">Free–₱1,500 / mo</td><td>Depends on list size</td></tr>
+  </table>
+  <div class="foot"><span><b>ECKHO SYSTEMS</b> · [Event] Website Proposal for Chrome</span><span>04</span></div>
+</section>
+
+<!-- 5 TICKETMELON -->
+<section class="page">
+  <div class="eyebrow">Ticket money</div>
+  <h2>How Ticketmelon billing works</h2>
+  <p>Our fee is for building and running the website. <b>Ticket money never passes through us.</b> Fans pay Ticketmelon, and Ticketmelon pays you.</p>
+  <table>
+    <tr><th style="width:36%">Item</th><th>What we found (to confirm with Ticketmelon)</th></tr>
+    <tr><td>Ticketmelon service fee (PH)</td><td>About 3.99%–4% of the ticket price, plus ₱20 per ticket for tickets over ₱300</td></tr>
+    <tr><td>Payment processing</td><td>About 3% for cards and e-wallets</td></tr>
+    <tr><td>Who pays the fees</td><td>The buyer, by default. You can choose to absorb part or all of it.</td></tr>
+    <tr><td>Setup or monthly fee</td><td>None. Free events cost nothing.</td></tr>
+    <tr><td>How fans pay</td><td>Credit/debit cards, GCash, Maya, GrabPay, ShopeePay</td></tr>
+    <tr><td>Payouts to you</td><td>Bank transfer. Published terms differ (on request in 5–10 business days, or within 14 business days after the event), so we will get your schedule in writing.</td></tr>
+    <tr><td>Refunds</td><td>If you refund, you pay 4% of the ticket price; Ticketmelon keeps its fees.</td></tr>
+  </table>
+
+  <h3>Example: one ₱3,000 general admission ticket</h3>
+  <table>
+    <tr><td>Ticket price (goes to you)</td><td class="num">₱3,000</td></tr>
+    <tr><td>Ticketmelon service fee (≈4% + ₱20)</td><td class="num">≈ ₱140</td></tr>
+    <tr><td>Payment processing (≈3%)</td><td class="num">≈ ₱94</td></tr>
+    <tr><td><b>Fan pays</b> (if fees are passed on; VAT on fees extra)</td><td class="num"><b>≈ ₱3,234</b></td></tr>
+  </table>
+  <p class="muted" style="font-size:8pt;margin-top:2mm">Figures are for illustration, based on Ticketmelon's last published Philippine rates. Ticketmelon has since taken down its public pricing page, so we will confirm your rates with your account manager before launch.</p>
+
+  <div class="note"><b>Performance option.</b> If you prefer to share risk: build at 75% of list price, plus 4% of ticket revenue tracked to our links and promo codes, capped at one full build fee. Only available once Ticketmelon confirms per-code sales reporting.</div>
+  <div class="foot"><span><b>ECKHO SYSTEMS</b> · [Event] Website Proposal for Chrome</span><span>05</span></div>
+</section>
+
+<!-- 6 TERMS -->
+<section class="page">
+  <div class="eyebrow">Working together</div>
+  <h2>Timeline, payment and terms</h2>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:0">Pro timeline (6 weeks)</h3>
+      <ol class="steps">
+        <li><b>Week 1</b> Kickoff, content checklist, 3 art-direction moodboards, Ticketmelon checkout test</li>
+        <li><b>Week 2</b> Homepage, tickets page and bag designs</li>
+        <li><b>Week 3</b> All page designs; editing system set up</li>
+        <li><b>Week 4</b> Build, ticket bag, tracking</li>
+        <li><b>Week 5</b> Content, testing, load test, staging review</li>
+        <li><b>Week 6</b> Fixes, training, launch</li>
+      </ol>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Payment schedule</h3>
+      <table>
+        <tr><th>Package</th><th>Schedule</th></tr>
+        <tr><td>Essential</td><td>50% to start · 50% before launch</td></tr>
+        <tr><td>Pro</td><td>50% to start · 30% on design approval · 20% before launch</td></tr>
+        <tr><td>Premium</td><td>40% · 30% · 30%</td></tr>
+      </table>
+      <h3>Taxes</h3>
+      <p style="font-size:8.8pt">Prices exclude VAT. 12% VAT is added if Eckho Systems is VAT-registered; otherwise 3% percentage tax applies. Clients who withhold tax should provide BIR Form 2307.</p>
+    </div>
+  </div>
+
+  <h3>What we need from you</h3>
+  <table>
+    <tr><td style="width:50%">Festival name, dates, venue, capacity</td><td>Logo, brand colours, fonts (or we create them)</td></tr>
+    <tr><td>Ticketmelon organizer access + account manager contact</td><td>Ticket tiers, phases and prices</td></tr>
+    <tr><td>Lineup, artist photos, past-edition photos/video</td><td>Your pixel IDs (Meta, TikTok) and email tool</td></tr>
+  </table>
+
+  <h3>Assumptions</h3>
+  <p style="font-size:8.6pt">Content is supplied on the agreed dates; delays move the timeline. Revisions beyond those included are billed at ₱1,500/hour. Checkout, payments, e-tickets and check-in are provided by Ticketmelon under your agreement with them. The pre-filled checkout uses a Ticketmelon link feature that we will confirm with Ticketmelon in week 1; if it is unavailable, tickets link to the matching Ticketmelon page at no change in price. You own the domain, content and design files on full payment.</p>
+
+  <div class="sig">
+    <div>For Chrome — name, signature, date</div>
+    <div>For Eckho Systems — name, signature, date</div>
+  </div>
+  <div class="foot"><span><b>ECKHO SYSTEMS</b> · [Event] Website Proposal for Chrome</span><span>06</span></div>
+</section>
+
+<script src="chrome.js"></script>
+</body>
+</html>
