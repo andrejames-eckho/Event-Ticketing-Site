@@ -22,6 +22,9 @@
 | US13 | client marketer | see which channel sold tickets | I spend ads wisely | P0 |
 | US14 | client | spin up the next edition/event from a template | I reuse the site | P0 |
 | US15 | fan | past editions recap (aftermovie, photos) | I trust the festival is good | P1 |
+| US16 | fan | watch videos from past Chrome events on the homepage | I get a feel for the vibe before buying | P0 |
+| US17 | DJ / producer | download remix packs from this festival's featured artists | I can remix and play their tracks | P0 |
+| US18 | client marketer | choose 3–10 videos and upload remix packs myself each festival | the site stays current without a developer | P0 |
 
 ## 2. Functional requirements
 
@@ -43,6 +46,14 @@
 - FR13 Past editions archive with gallery + aftermovie. P1
 - FR14 Partners / sponsors section. P2
 - FR15 News / announcements (lineup drops). P1
+
+### Videos + remix packs (P0, added 2026-10-27, [ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md))
+- FR25 Homepage video section: **3 to 10** YouTube videos per edition from the client's official channel. First = featured. CMS blocks publish outside 3–10 or with duplicates. **Built.**
+- FR26 Videos load click-to-play (thumbnail only, `youtube-nocookie.com`); dead, private or non-embeddable links hidden at build. **Built.**
+- FR27 Remix packs: `/remix` page, card on artist page, homepage strip. Each pack: cover, artist, BPM/key/stems, size, licence, Download (.zip). Planned.
+- FR28 Client uploads zip inside Sanity Studio; file stored on Cloudflare R2 (any size up to 5 GB), served from `files.<domain>`. Scheduled release (`releaseAt`) and optional expiry. Planned.
+- FR29 Optional email gate per pack: none / soft / strict (Q11). Default none. Planned.
+- FR30 Tracking: `video_play` (built) and `remix_download` events to GA4 via GTM.
 
 ### Growth + tracking (P0)
 - FR16 Waitlist / newsletter form → client ESP; consent checkbox (PH Data Privacy Act). P0
@@ -67,6 +78,8 @@
 | NFR4 | Philippine Data Privacy Act 2012 compliant forms + privacy notice |
 | NFR5 | 99.9% uptime during sale windows |
 | NFR6 | Works on low-end Android + Chrome / Safari last 2 versions |
+| NFR7 | Video embeds add no JS or third-party requests before click |
+| NFR8 | Remix downloads never served from Sanity or Vercel (bandwidth caps); upload signing requires a logged-in Sanity editor |
 
 ## 4. Out of scope
 See [03-non-goals](03-non-goals.md).

@@ -35,6 +35,7 @@ Multi-event platform (D3) needs CMS → **Pro is the minimum fit**; Essential st
 ## 3. Next-edition refresh
 
 35–50% of original build (≈ ₱15k–140k): re-skin for new edition, new hero, new tiers, archive previous edition.
+Swapping videos and uploading new remix packs is self-serve in the CMS and not part of the refresh fee.
 
 ## 4. Add-ons
 
@@ -46,6 +47,8 @@ Multi-event platform (D3) needs CMS → **Pro is the minimum fit**; Essential st
 | Ads landing page | 18,000 |
 | Rush delivery | +30–50% |
 | Copywriting, photo/video | Quoted separately |
+
+**Videos + remix packs** (added to Chrome scope 2026-10-27, D17): scope settled with client. Build effort ≈ 1–1.5 days videos, 2–3 days remix packs (incl. R2 upload input). Use as reference for future clients asking for the same.
 
 ## 5. Performance option (alternative)
 
@@ -63,4 +66,4 @@ Build at 70–80% of list + 3–5% of ticket revenue tracked to agency links (UT
 
 - PH VAT 12% applies only if agency is VAT-registered (gross > ₱3M/yr); otherwise 3% percentage tax.
 - Corporate clients may withhold 2–10% EWT; issue BIR Form 2307 handling in invoice terms.
-- Third-party costs (domain, paid CMS tier, paid hosting) billed at cost or included in retainer.
+- Third-party costs (domain, paid CMS tier, paid hosting) billed at cost or included in retainer. Cloudflare R2 for remix packs: free up to 10 GB stored, then $0.015/GB-month, downloads free; Cloudflare DNS free.

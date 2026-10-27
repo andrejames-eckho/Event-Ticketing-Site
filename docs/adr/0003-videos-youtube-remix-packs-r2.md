@@ -1,6 +1,6 @@
 # ADR 0003: Videos via YouTube facade, remix packs on Cloudflare R2
 
-**Status:** Accepted · 2026-10-27
+**Status:** Accepted · 2026-10-27 · Videos implemented (design build), remix packs planned
 
 ## Context
 Client wants (a) videos from past events and festivals and (b) downloadable remix packs (zip) from the featured artists of the current festival. Both change every festival, so the client must manage them in the CMS after handover. Videos come from the client's official YouTube channel. Remix packs are zip files, likely zipped WAV stems (often > 100 MB).

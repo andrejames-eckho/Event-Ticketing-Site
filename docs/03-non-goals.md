@@ -16,3 +16,8 @@ Things we are deliberately **not** building. Each one is either handled by Ticke
 | Live-streaming platform | Separate product | Out of scope |
 | Merch store (v1) | Can add Shopify Buy Button later as add-on | Future add-on |
 | Real-time inventory scraped from Ticketmelon | Fragile, may breach ToS. Only via official API if offered | See [09](09-ticketmelon-integration.md) |
+| Our own video hosting / streaming | YouTube hosts for free; client already publishes there | YouTube (client channel) |
+| Remix files stored in the CMS | Sanity bandwidth cap would block site images ([ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md)) | Cloudflare R2 |
+| Fan accounts / logins to download packs | Friction; optional email gate covers lead capture | Out of scope |
+| Clearing remix rights with artists/labels | Legal/licensing, not web build | Client (settled, D17) |
+| Producing or mastering remix packs | Audio work | Client / artists |

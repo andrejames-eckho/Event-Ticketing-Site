@@ -11,6 +11,9 @@
 - [x] Client accepted Pro package, 2026-10-26 (D15)
 - [x] **G0:** contract signed + 50% downpayment sent, 2026-10-26 (D16)
 - [ ] Ticketmelon organizer access + account manager contact (needed in Week 1)
+- [x] Videos + remix packs added to scope, ADR 0003 accepted, 2026-10-27 (D17–D21)
+- [x] Video section in design build with first 3 links (The Luminance sets), 2026-10-27
+- [ ] Remix pack page + card in design build (placeholder data)
 
 ## Phase 1 — Build (Pro)
 
@@ -27,9 +30,11 @@
 - On-sale days support, lineup drops, phase changes
 - Monthly analytics report (site → Ticketmelon funnel, promo-code sales)
 - Weekly automated `fast_checkout` health check
+- Monthly: delete expired remix zips from R2 (Sanity delete doesn't remove the file); report `video_play` + `remix_download`
 
 ## Phase 3 — Next edition / new events
 - Edition refresh (35–50% of build), archive previous edition
+- Client swaps videos (3–10) and uploads new remix packs in Sanity (self-serve)
 - If Ticketmelon grants availability feed: live sold-out sync
 - Optional: Filipino language, merch (Shopify Buy Button), Looker Studio dashboard
 

@@ -14,7 +14,7 @@ const meta = [video.eventLabel, kinds[video.kind]].filter(Boolean).join(' · ');
       <span class="play" aria-hidden="true">▶</span>
     </Ph>
   ) : (
-    <button class="video-frame" type="button" data-embed={embedUrl(video.id)} aria-label={`Play video: ${video.title}`}>
+    <button class="video-frame" type="button" data-embed={embedUrl(video.id)} data-video-id={video.id} aria-label={`Play video: ${video.title}`}>
       <img
         src={thumbnailUrl(video.id, featured ? 'maxresdefault' : 'hqdefault')}
         onerror={featured ? `this.onerror=null;this.src='${thumbnailUrl(video.id)}'` : undefined}
@@ -45,6 +45,8 @@ const meta = [video.eventLabel, kinds[video.kind]].filter(Boolean).join(' · ');
     iframe.className = 'video-frame';
     btn.replaceWith(iframe);
     iframe.focus();
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'video_play', video_id: btn.dataset.videoId, video_title: iframe.title });
   });
 </script>
 

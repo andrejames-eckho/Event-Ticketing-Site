@@ -59,7 +59,7 @@ SiteSettings (singleton)
 - **Stage:** name, color, order. Chrome: Dinagyang has one stage (D14); keep the type so future events can have more.
 
 ## pastVideo (object, inside Edition.pastVideos)
-Client's official YouTube channel only (D18). Schema: [studio/schemaTypes/pastVideo.js](../studio/schemaTypes/pastVideo.js). See [ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md).
+**Built** (2026-10-27): site reads `pastVideos` from [event.js](../site/src/data/event.js) until Sanity is wired. Client's official YouTube channel only (D18). Schema: [studio/schemaTypes/pastVideo.js](../studio/schemaTypes/pastVideo.js). See [ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md).
 
 | Field | Type | Notes |
 |-------|------|-------|
@@ -71,7 +71,7 @@ Client's official YouTube channel only (D18). Schema: [studio/schemaTypes/pastVi
 List rules (publish blocked otherwise): at least 3, at most 10, no duplicate video. Thumbnail shown in Studio preview. Artist videos stay on `Artist.youtubeUrl`.
 
 ## RemixPack
-Zip stored on Cloudflare R2, not Sanity (D19, [ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md)).
+**Planned** (not built). Zip stored on Cloudflare R2, not Sanity (D19, [ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md)).
 
 | Field | Type | Notes |
 |-------|------|-------|

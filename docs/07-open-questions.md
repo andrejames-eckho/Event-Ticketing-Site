@@ -27,6 +27,7 @@
 | D19 | 2026-10-27 | Remix packs are **zip** files, stored on **Cloudflare R2**, uploaded from Sanity Studio direct to R2 ([ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md)) | Owner |
 | D20 | 2026-10-27 | Domain DNS on **Cloudflare** (free plan). Needed for the R2 file subdomain. Registrar still open | Owner |
 | D21 | 2026-10-27 | Video section: client chooses **3 to 10** videos per edition (Sanity rule). Owner supplying past-event links now | Owner |
+| D22 | 2026-10-27 | First 3 videos live in design build: Chrome: The Luminance sets by DJ Love, Ron Poe, Arthur Tan (Chrome PH channel). Labels assumed, see Q15 | Owner |
 
 ## Open: client
 
@@ -46,6 +47,7 @@
 | Q12 | Largest expected remix pack size? Upload path handles up to 5 GB; confirm for storage estimate | R2 cost estimate |
 | Q13 | ~~Which videos at launch?~~ Owner sending links (D21) | — |
 | Q14 | Client creates the Cloudflare account (owner of R2 bucket + DNS); agency invited as member | R2 setup, DNS |
+| Q15 | Luminance videos: add year to label? All "Live set"? DJ Love as featured? | Video labels |
 
 ## Open: Ticketmelon
 

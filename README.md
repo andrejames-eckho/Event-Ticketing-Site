@@ -2,7 +2,9 @@
 
 Official website for **Chrome**'s music festival(s), built by **Eckho Systems**. It is the main place fans go to learn about the event and buy tickets. Checkout runs on **Ticketmelon**; this site handles discovery, hype, information and the handoff to purchase.
 
-**Status:** ADRs 0001 + 0002 accepted 2026-10-20. Design build in `site/` (2026-10-21): full multi-page site in Liquid Chrome colours, placeholder copy/assets, Ticketmelon checkout as a pending slot. See [site/README.md](site/README.md).
+**Status:** ADRs 0001 + 0002 accepted 2026-10-20, ADR 0003 accepted 2026-10-27. Design build in `site/` (2026-10-21): full multi-page site in Liquid Chrome colours, placeholder copy/assets, Ticketmelon checkout as a pending slot. See [site/README.md](site/README.md).
+
+**Added 2026-10-27 (D17–D21):** past-event **videos** (3–10 YouTube links per edition, client-editable; built, first 3 live in the design build) and **remix pack downloads** (zip on Cloudflare R2, uploaded from Sanity; planned, not built). See [ADR 0003](docs/adr/0003-videos-youtube-remix-packs-r2.md).
 
 **Placeholders:** working event = **Chrome: Dinagyang**, Sat 23 – Sun 24 Jan 2027, **ICON** (Iloilo City), see [07 D10](docs/07-open-questions.md). Older docs and the client PDFs still say `[Event]`, `[Venue]`, `[Date]`. Agency = Eckho Systems, client = Chrome (client PDFs use these; older docs may still say `[Agency]` / `[Client]`).
 
@@ -15,6 +17,7 @@ Event Ticketing Site/
 │   ├── research/            ← raw research: Ticketmelon, design benchmark, pricing
 │   └── adr/                 ← architecture decision records
 ├── site/                    ← Astro demo: on-site Bag → Ticketmelon fast_checkout
+├── studio/                  ← Sanity schemas written ahead of the Studio project (Week 2)
 └── client/                  ← client-facing PDFs (pricing proposal, presentation); edit src/*.html, re-render with Chrome headless
 ```
 
@@ -51,6 +54,12 @@ Re-render after editing `client/src/*.html`:
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --no-pdf-header-footer --virtual-time-budget=8000 --print-to-pdf="client/[Event] Website - Pricing Proposal.pdf" "file://$PWD/client/src/pricing.html"
 ```
 
-## Key finding
+## Key findings
+
+### Remix packs must not live in Sanity
+
+Sanity's free plan blocks all asset delivery (site images included) once 100 GB/month bandwidth is used; a few hundred downloads of one stems zip can do that in festival week. Packs go on Cloudflare R2 (no download fees) instead. See [ADR 0003](docs/adr/0003-videos-youtube-remix-packs-r2.md).
+
+### Ticketmelon
 
 Ticketmelon has no public API, but its checkout accepts a pre-filled order via URL (`fast_checkout`), as used by wonderfruit.co. Fans pick tickets on our site and land on Ticketmelon ready to pay. See [docs/09](docs/09-ticketmelon-integration.md).

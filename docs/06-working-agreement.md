@@ -11,6 +11,7 @@
 | Development | Agency (Claude-assisted) | Build, integrations, hosting |
 | Client owner | [Client] contact | Approvals, content, Ticketmelon account access |
 | Ticketmelon contact | Ticketmelon account manager | Event setup, API/widget access, pixels on checkout |
+| Cloudflare account owner | [Client] contact (agency invited as member) | R2 bucket for remix packs, DNS (D20, Q14) |
 
 ## Rules
 
@@ -20,6 +21,7 @@
 4. **Written approvals** at each gate: art direction, homepage design, full design, staging site, launch.
 5. **Two revision rounds** per design gate are included; more are billed (see pricing).
 6. **Client supplies** logos, lineup, photos/video, copy facts, and Ticketmelon access by agreed dates. Late content moves the timeline, not the quality bar.
+7. **Per festival, client supplies** 3–10 YouTube links from the official channel, and for each remix pack: the zip, cover image, contents (BPM, key, stems) and licence text, with artist/label permission already cleared (D17). After handover the client uploads these in Sanity without the agency.
 
 ## Approval gates
 

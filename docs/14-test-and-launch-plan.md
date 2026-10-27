@@ -7,7 +7,7 @@
 | Area | Test | Tool | Pass bar |
 |------|------|------|----------|
 | Ticket links | Every tier CTA opens correct Ticketmelon page, UTMs kept | Manual + Playwright link check | 100% |
-| Tracking | `page_view`, `ticket_click`, `waitlist_signup` fire in GA4 DebugView, Meta Events Manager, TikTok helper | GTM preview | All fire, correct params |
+| Tracking | `page_view`, `ticket_click`, `waitlist_signup`, `video_play`, `remix_download` fire in GA4 DebugView, Meta Events Manager, TikTok helper | GTM preview | All fire, correct params |
 | Consent | No marketing pixels before consent | DevTools network | 0 pre-consent hits |
 | Performance | Home, tickets, lineup on mobile 4G | Lighthouse, WebPageTest | LCP < 2.5 s, perf ≥ 90 |
 | Load | 10k virtual users on home + tickets | k6 against CDN | p95 < 1 s, 0 errors |

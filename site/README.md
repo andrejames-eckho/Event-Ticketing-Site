@@ -13,7 +13,7 @@ npm run build
 
 | Route | What |
 |-------|------|
-| `/` | Event home funnel (docs/08 §2): hero, lineup teaser, ticket preview, experience, venue, recap, FAQ, waitlist |
+| `/` | Event home funnel (docs/08 §2): hero, lineup teaser, ticket preview, experience, venue, recap + past-event videos, FAQ, waitlist |
 | `/tickets` | Tier cards with phase ladders + qty steppers, filters, GA vs VIP comparison, how-it-works, fees, ticket FAQ |
 | `/lineup`, `/lineup/[slug]` | Typographic poster + artist grid, day filter; artist pages |
 | `/schedule` | Set times by day and stage (`scheduleReleased: false` shows the "coming soon" state) |

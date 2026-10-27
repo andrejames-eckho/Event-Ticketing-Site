@@ -49,6 +49,7 @@ Static-first marketing site + headless CMS + third-party checkout. No database, 
 - **Content publish:** editor publishes in Sanity → webhook → revalidate affected pages (< 60 s live).
 - **Scheduled lineup drop:** Sanity scheduled publish at exact time.
 - **Ticket handoff:** see [09 §2](09-ticketmelon-integration.md).
+- **Video play:** click thumbnail → nocookie iframe replaces it → `video_play` (video_id, video_title) to dataLayer.
 - **Video publish:** editor pastes YouTube URL → publish → build checks oEmbed → card live (hidden if video dead).
 - **Remix pack upload:** editor picks zip in Studio → `/api/r2-upload-url` verifies Sanity token → presigned PUT → browser uploads to R2 → URL saved on doc → publish (or schedule `releaseAt`).
 - **Remix download:** link to `files.<domain>/…zip` (`Content-Disposition: attachment`) → GTM `remix_download` event (artist, pack, edition).

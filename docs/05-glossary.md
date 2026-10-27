@@ -20,3 +20,10 @@
 | **ISR** | Incremental static regeneration: pages are static (fast) but refresh when CMS content changes. |
 | **LCP** | Largest Contentful Paint: main speed metric for "page looks loaded". |
 | **Waitlist** | Email/SMS signup collected before tickets go on sale. |
+| **Remix pack** | Zip of an artist's stems/parts (plus licence) that fans download to make remixes. One or more per featured artist per edition. |
+| **Stems** | Separate audio tracks of a song (drums, bass, vocals…) used for remixing. |
+| **R2** | Cloudflare's file storage. Holds remix zips; no charge for downloads (egress). |
+| **Presigned URL** | Short-lived link that lets the editor's browser upload one file straight to R2 without exposing storage keys. |
+| **Click-to-load facade** | Video shown as a thumbnail; the YouTube player only loads when the fan presses play. Keeps pages fast. |
+| **oEmbed** | Public YouTube endpoint we call at build time to get a video's title and check it still plays. |
+| **Email gate** | Asking for an email before a download: none, soft (link after signup) or strict (expiring link). |
