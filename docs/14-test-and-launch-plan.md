@@ -16,6 +16,10 @@
 | CMS | Editor changes tier to sold out → live in < 60 s | Manual | Pass |
 | SEO | JSON-LD valid, sitemap, OG previews | Rich Results Test, FB debugger | Valid |
 | Forms | Waitlist → ESP list, consent stored | Manual | Pass |
+| Videos | No YouTube requests before click; dead/private URL hidden at build; plays on iOS Safari + Android Chrome; Studio blocks publish with 2 or 11 videos | DevTools network, manual | Pass |
+| Remix upload | Editor uploads 1 GB zip from Studio on normal connection; URL saved; non-editor call to `/api/r2-upload-url` → 401 | Manual + curl | Pass |
+| Remix download | File downloads with clean filename, `remix_download` fires, served from `files.` subdomain | Manual + GTM preview | Pass |
+| Remix schedule | Pack with future `releaseAt` hidden; appears at release time | Manual | Pass |
 
 ## 2. Launch checklist
 
@@ -27,7 +31,8 @@
 - [ ] Sitemap submitted to Google Search Console
 - [ ] OG images checked in FB/X/Messenger/Viber previews
 - [ ] Uptime monitor + alerts on
-- [ ] Client trained on CMS (recorded walkthrough)
+- [ ] `files.` subdomain live on R2, CORS limited to Studio origin
+- [ ] Client trained on CMS (recorded walkthrough, incl. videos + remix upload)
 - [ ] On-sale day runbook shared (who changes what, when)
 
 ## 3. On-sale day runbook (summary)

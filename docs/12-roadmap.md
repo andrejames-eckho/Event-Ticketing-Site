@@ -7,18 +7,21 @@
 - [x] Draft docs 01–15
 - [ ] Owner review of docs
 - [ ] Client answers Q1–Q10; Ticketmelon answers T1–T9
-- [ ] Proposal + pricing PDF + presentation PDF sent
+- [x] Proposal + pricing PDF + presentation PDF sent
+- [x] Client accepted Pro package, 2026-10-26 (D15)
+- [x] **G0:** contract signed + 50% downpayment sent, 2026-10-26 (D16)
+- [ ] Ticketmelon organizer access + account manager contact (needed in Week 1)
 
 ## Phase 1 — Build (Pro)
 
 | Week | Work | Gate |
 |------|------|------|
 | 1 | Kickoff, content checklist to client, 3 art-direction moodboards, Ticketmelon spike: test `fast_checkout` on client's event with real ticket_type_ids | **G1** art direction |
-| 2 | Homepage + tickets page + Bag design (mobile first); Sanity schemas | **G2** key designs |
-| 3 | Remaining page designs; Astro build starts; CMS set up | **G3** all designs |
-| 4 | Build: pages, Bag + Ticketmelon handoff, CMS wiring, tracking (GTM, GA4, Meta, TikTok) | — |
-| 5 | Content load, QA (test plan [14](14-test-and-launch-plan.md)), load test, pixels with Ticketmelon | **G4** staging |
-| 6 | Fixes, CMS training, launch, on-sale runbook | **G5** live |
+| 2 | Homepage + tickets page + Bag design (mobile first); Sanity schemas incl. `Video` + `RemixPack`; client creates Cloudflare account (Q14) | **G2** key designs |
+| 3 | Remaining page designs incl. Remix + Videos; Astro build starts; CMS set up; R2 bucket + `files.` subdomain + CORS | **G3** all designs |
+| 4 | Build: pages, Bag + Ticketmelon handoff, CMS wiring, tracking (GTM, GA4, Meta, TikTok); video facade + oEmbed check; R2 upload input + `/api/r2-upload-url` | — |
+| 5 | Content load (videos Q13, first packs), QA (test plan [14](14-test-and-launch-plan.md)), load test, pixels with Ticketmelon | **G4** staging |
+| 6 | Fixes, CMS training (incl. adding videos + uploading packs), launch, on-sale runbook | **G5** live |
 
 ## Phase 2 — Operate (retainer)
 - On-sale days support, lineup drops, phase changes

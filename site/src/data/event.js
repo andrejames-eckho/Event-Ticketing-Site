@@ -209,6 +209,18 @@ export const stats = [
   { value: '1', label: 'stage, no clashes' },
 ];
 
+// ── Past-event videos ─────────────────────────────────────────────────────────
+// Sanity: Edition.pastVideos (studio/schemaTypes/pastVideo.js). Client picks 3 to 10, order = display order,
+// first one is the big featured slot. Official client YouTube channel only (D18).
+// Empty youtubeUrl = placeholder slot. title optional: falls back to the YouTube title.
+// kind: aftermovie | set | recap | teaser | interview
+export const pastVideos = [
+  // Owner, 2026-10-27. Official Chrome PH channel (@ChromeIloilo). Year + type assumed from titles: confirm.
+  { title: 'DJ Love', youtubeUrl: 'https://www.youtube.com/watch?v=L9bNu1Ssyvw', eventLabel: 'Chrome: The Luminance', kind: 'set' },
+  { title: 'Ron Poe', youtubeUrl: 'https://www.youtube.com/watch?v=qoFVni793jU', eventLabel: 'Chrome: The Luminance', kind: 'set' },
+  { title: 'Arthur Tan', youtubeUrl: 'https://www.youtube.com/watch?v=zkNbDceTGWs', eventLabel: 'Chrome: The Luminance', kind: 'set' },
+];
+
 export const travel = [
   // PLACEHOLDER copy (Q5). Times are rough; client to confirm.
   { mode: 'By air', text: 'Fly into Iloilo International Airport. About [XX] min to the venue by car or shuttle.' },

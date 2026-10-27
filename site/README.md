@@ -25,6 +25,7 @@ npm run build
 
 - **All content lives in [src/data/event.js](src/data/event.js)**, with field names from [docs/11](../docs/11-content-model.md) so it moves to Sanity 1:1. Comments mark each value `CONFIRMED-PH` (owner's working placeholder), `PLACEHOLDER` (client, Q*) or `PENDING-TM` (Ticketmelon, T*).
 - Placeholder copy and assets are flagged on the page with dashed tags (yellow = client, teal = Ticketmelon) and striped photo/video/map blocks that describe the shot needed. The client writes the final copy and supplies the brand assets.
+- **Past-event videos** (homepage recap): paste YouTube links into `pastVideos` in [src/data/event.js](src/data/event.js) (3 to 10, first = featured). Empty `youtubeUrl` shows a placeholder slot; dead or private links are dropped at build. Sanity version of the same rule: [../studio/schemaTypes/pastVideo.js](../studio/schemaTypes/pastVideo.js).
 - Logo, favicon, hero art and ring motif are agency placeholders built in CSS/SVG (no image files).
 
 ## Review toolbar

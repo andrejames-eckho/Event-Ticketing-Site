@@ -3,6 +3,8 @@
 **Status:** DRAFT v0.1 · Source: [research/pricing-benchmark.md](research/pricing-benchmark.md)
 All prices ex-VAT, PHP. USD at ₱60 = $1 for reference only.
 
+**Agreed 2026-10-26:** Client chose **Pro, ₱120,000 ex-VAT** (D15). Invoices: ₱60,000 at start · ₱36,000 at G3 design approval · ₱24,000 before launch (G5), plus VAT/percentage tax per §7.
+
 ## 1. Packages
 
 | | **Essential** | **Pro** (recommended) | **Premium** |

@@ -13,6 +13,7 @@
 /[event]/schedule                   Set times ("coming soon" state until published)
 /[event]/info                       Plan your trip: venue, map, getting there, stay, rules, accessibility
 /[event]/faq                        Full FAQ, searchable
+/[event]/remix                      Remix packs from featured artists (current edition), licence + download
 /[event]/[year]                     Past edition archive: recap, aftermovie, gallery
 /news, /news/[slug]                 Announcements, lineup drops
 /about                              [Client] story, partners, press kit
@@ -30,7 +31,8 @@
 6. Experience tiles (stages, food, beach/camping)
 7. Packages / barkada bundles
 8. Venue + getting there (static map, transport chips)
-9. Social proof: past stats, press, aftermovie
+9. Social proof: past stats, press, past-event videos (3–10, click-to-load): first one big, rest in a 3-col grid (2-col tablet, swipe row on phones)
+9b. Remix packs strip: 2–4 pack cards → "All remix packs" (hidden when no packs released)
 10. FAQ top 6 → "All FAQs"
 11. Waitlist / newsletter
 12. Footer: partners, socials, legal, "Official ticketing partner: Ticketmelon", contact
@@ -47,6 +49,14 @@ Status banner → buyer tabs (1-Day / Weekend / VIP / Barkada) → tier cards wi
 - **Checkout** button + "You'll be redirected to ticketmelon.com"
 - Mobile: full-height sheet; desktop: right drawer
 - Persisted in `localStorage`
+
+## 4b. Videos + remix packs
+
+- **Video card:** thumbnail (click-to-load facade), title, event label · type. Play loads player inline; no YouTube request before click. Max 10 → all fit on the homepage, no separate videos page.
+- **Artist page:** that artist's videos + their remix pack card (if released).
+- **Remix pack card:** cover, artist, title, contents (BPM, key, stems), file size, **Download** (`.zip`). Licence shown above the button.
+- **Email gate (per pack):** `none` = direct link · `soft` = waitlist form, link revealed after submit · `strict` = form, then expiring link from function.
+- **Past edition archive** (`/[event]/[year]`) shows that edition's aftermovie + gallery; its remix packs only if client keeps them live.
 
 ## 5. Global elements
 
@@ -69,4 +79,4 @@ Status banner → buyer tabs (1-Day / Weekend / VIP / Barkada) → tier cards wi
 
 ## 7. Navigation
 
-Header: Lineup · Tickets · Schedule · Info · FAQ · (News). Mobile: hamburger + Tickets pill always visible.
+Header: Lineup · Tickets · Schedule · Info · FAQ · (Remix) · (News). Remix appears only when a pack is released. Mobile: hamburger + Tickets pill always visible.

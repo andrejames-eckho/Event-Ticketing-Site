@@ -16,3 +16,7 @@
 | R10 | Ticketmelon fee/terms change (public pricing page already removed) | M | M | Fees shown as "excl. service fee" not hard numbers; get fees in writing | Client |
 | R11 | Using Ticketmelon buyer emails for marketing breaches their terms / DPA | M | H | Don't import buyer data until legal + Ticketmelon confirm; grow own opt-in waitlist | Client |
 | R12 | Payout timing unclear (≤14 business days post-event vs on request) cash-flow surprise | M | M | Confirm schedule + reserves with Ticketmelon before on-sale | Client |
+| R13 | Remix downloads exhaust CMS bandwidth and take site images down (Sanity free plan blocks assets on overage) | H if files in Sanity | H | Zips on Cloudflare R2, never Sanity ([ADR 0003](adr/0003-videos-youtube-remix-packs-r2.md)) | Agency |
+| R14 | Embedded YouTube video removed, made private or embedding turned off | M | L | Client's own channel only (D18); build-time oEmbed check hides dead videos | Agency |
+| R15 | Remix pack copyright complaint or takedown request | L | M | Rights settled (D17); licence text shown per pack; editor can unpublish instantly | Client |
+| R16 | Upload signing function abused to fill bucket | L | M | Function checks editor's Sanity token + project membership; short URL expiry; zip-only content type | Agency |

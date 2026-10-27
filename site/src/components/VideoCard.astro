@@ -1,0 +1,74 @@
+---
+// Click-to-load YouTube facade (docs/adr/0003): thumbnail + play button at page load, player only after a click.
+// Empty slot (no URL yet) renders a placeholder block.
+import Ph from './Ph.astro';
+import { thumbnailUrl, embedUrl } from '../lib/youtube.js';
+
+const { video, featured = false } = Astro.props;
+const kinds = { aftermovie: 'Aftermovie', set: 'Live set', recap: 'Recap', teaser: 'Teaser', interview: 'Interview' };
+const meta = [video.eventLabel, kinds[video.kind]].filter(Boolean).join(' · ');
+---
+<figure class:list={['video', { featured }]}>
+  {video.placeholder ? (
+    <Ph kind="Video" desc="Paste a YouTube link from the official channel" ratio="16 / 9" class="video-frame">
+      <span class="play" aria-hidden="true">▶</span>
+    </Ph>
+  ) : (
+    <button class="video-frame" type="button" data-embed={embedUrl(video.id)} aria-label={`Play video: ${video.title}`}>
+      <img
+        src={thumbnailUrl(video.id, featured ? 'maxresdefault' : 'hqdefault')}
+        onerror={featured ? `this.onerror=null;this.src='${thumbnailUrl(video.id)}'` : undefined}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width="480"
+        height="270"
+      />
+      <span class="play" aria-hidden="true">▶</span>
+    </button>
+  )}
+  <figcaption>
+    <span class="title">{video.placeholder ? 'Video title' : video.title}</span>
+    {meta && <span class="small muted">{meta}</span>}
+  </figcaption>
+</figure>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element && e.target.closest('button[data-embed]');
+    if (!btn) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = btn.dataset.embed;
+    iframe.title = btn.getAttribute('aria-label')?.replace(/^Play video: /, '') || 'YouTube video';
+    iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.className = 'video-frame';
+    btn.replaceWith(iframe);
+    iframe.focus();
+  });
+</script>
+
+<style>
+  .video { margin: 0; display: grid; gap: 10px; }
+  .video :global(.video-frame) {
+    position: relative; display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 9; padding: 0;
+    border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-2);
+    cursor: pointer; color: inherit;
+  }
+  .video :global(iframe.video-frame) { cursor: auto; }
+  .video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .video :global(.video-frame .ph-label) { position: absolute; left: 0; bottom: 0; }
+  /* Bottom-left so it never covers the artist name Chrome puts in the middle of its thumbnails */
+  .play {
+    position: absolute; left: 14px; bottom: 14px; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; padding-left: 4px;
+    background: var(--text); color: var(--bg); font-size: 18px; transition: transform 0.15s ease;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 0.45);
+  }
+  .featured .play { left: 20px; bottom: 20px; width: 72px; height: 72px; font-size: 24px; }
+  .video :global(.ph .play) { position: relative; left: auto; bottom: auto; }
+  button.video-frame:hover .play, button.video-frame:focus-visible .play { transform: scale(1.08); }
+  button.video-frame:focus-visible { outline: 2px solid var(--metal-mid); outline-offset: 3px; }
+  figcaption { display: grid; gap: 2px; }
+  .title { font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .featured .title { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(20px, 2.6vw, 28px); line-height: 1.05; }
+</style>

@@ -5,7 +5,9 @@ import TierCard from '../components/TierCard.astro';
 import Rings from '../components/Rings.astro';
 import Ph from '../components/Ph.astro';
 import Pending from '../components/Pending.astro';
-import { event, edition, saleStates, tiers, artists, experiences, stats, travel, faqs, ticketmelon } from '../data/event.js';
+import VideoCard from '../components/VideoCard.astro';
+import { resolveVideos } from '../lib/youtube.js';
+import { event, edition, saleStates, tiers, artists, experiences, stats, travel, faqs, ticketmelon, pastVideos } from '../data/event.js';
 
 const sale = saleStates[edition.saleState];
 const headliners = artists.filter((a) => a.billing === 'headliner');
@@ -13,6 +15,7 @@ const subs = artists.filter((a) => a.billing === 'sub');
 const support = artists.filter((a) => a.billing === 'support');
 const featuredTiers = tiers.filter((t) => ['weekend', 'vip', 'barkada'].includes(t.key));
 const topFaqs = faqs.filter((f) => f.top).slice(0, 6);
+const [featuredVideo, ...moreVideos] = await resolveVideos(pastVideos);
 const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city}`, 'One stage · Two nights', 'Metal · Light · Bass'];
 ---
 <Base>
@@ -153,9 +156,16 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
           <div><dt class="muted">{s.label}</dt><dd class="display metal num">{s.value}</dd></div>
         ))}
       </dl>
-      <Ph kind="Video" desc="Aftermovie (YouTube, click-to-load facade so it costs nothing at page load)" ratio="16 / 9" class="video-ph">
-        <span class="play" aria-hidden="true">▶</span>
-      </Ph>
+      {featuredVideo && (
+        <div class="videos">
+          <VideoCard video={featuredVideo} featured />
+          {moreVideos.length > 0 && (
+            <div class:list={['video-grid', { two: [2, 4].includes(moreVideos.length) }]}>
+              {moreVideos.map((v) => <VideoCard video={v} />)}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   </section>
 
@@ -294,11 +304,18 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
   .stats div { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-lg); display: flex; flex-direction: column-reverse; gap: 6px; }
   .stats dd { margin: 0; font-size: clamp(36px, 5vw, 64px); }
   @media (max-width: 720px) { .stats { grid-template-columns: 1fr 1fr; } }
-  .video-ph { place-items: center; }
-  .video-ph .ph-label { position: absolute; left: 0; bottom: 0; }
-  .play {
-    width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; padding-left: 6px;
-    background: var(--text); color: var(--bg); font-size: 28px;
+  .videos { display: grid; gap: 24px; }
+  .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 16px; }
+  .video-grid.two { grid-template-columns: 1fr 1fr; } /* 2 or 4 small videos: no empty column */
+  @media (max-width: 860px) { .video-grid { grid-template-columns: 1fr 1fr; } }
+  /* Phones: swipe row instead of up to 9 stacked cards */
+  @media (max-width: 520px) {
+    .video-grid {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 78%;
+      overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+      margin-inline: -16px; padding: 0 16px 8px; scroll-padding-inline: 16px;
+    }
+    .video-grid > :global(*) { scroll-snap-align: start; }
   }
 
   /* FAQ */
