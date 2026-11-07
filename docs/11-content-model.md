@@ -36,6 +36,7 @@ SiteSettings (singleton)
 | heroMedia | video/image | poster image fallback required |
 | ticketmelonEventUrl | url | main event page |
 | onSaleAt | datetime | for countdown |
+| lineupRevealAt | datetime? (Asia/Manila) | lineup embargo. Before it: no links to `/lineup`, curtain on the homepage lineup slot, schedule shows "coming soon". Empty = public. Needs a rebuild at that time (docs/10) |
 | feeDisclosure | text | |
 | pastVideos | array<pastVideo>, **min 3, max 10** | homepage video section; order = display order, first = featured |
 | gallery | images | for past editions |

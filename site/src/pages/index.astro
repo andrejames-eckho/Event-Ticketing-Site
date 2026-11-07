@@ -6,8 +6,9 @@ import Rings from '../components/Rings.astro';
 import Ph from '../components/Ph.astro';
 import Pending from '../components/Pending.astro';
 import VideoCard from '../components/VideoCard.astro';
+import LineupCurtain from '../components/LineupCurtain.astro';
 import { resolveVideos } from '../lib/youtube.js';
-import { event, edition, saleStates, tiers, artists, experiences, stats, travel, faqs, ticketmelon, pastVideos } from '../data/event.js';
+import { event, edition, saleStates, tiers, artists, experiences, stats, travel, faqs, ticketmelon, pastVideos, lineupRevealed, lineupRevealLabel } from '../data/event.js';
 
 const sale = saleStates[edition.saleState];
 const headliners = artists.filter((a) => a.billing === 'headliner');
@@ -37,7 +38,7 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
       <p class="lead hero-tag">{event.tagline} <Pending ref="Q5 copy" /></p>
       <div class="hero-cta">
         <a class="btn" href={sale.ctaHref} data-sale-text="cta" data-sale-href>{sale.cta}</a>
-        <a class="btn btn-ghost" href="/lineup">See lineup</a>
+        {lineupRevealed && <a class="btn btn-ghost" href="/lineup">See lineup</a>}
       </div>
       <p class="hero-status small">
         <span class="live-dot" aria-hidden="true"></span>
@@ -55,28 +56,36 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
     </div>
   </div>
 
-  <!-- 3. Lineup teaser -->
+  <!-- 3. Lineup teaser. Before edition.lineupRevealAt: curtain, no names and no /lineup links in the HTML. -->
   <section class="section" aria-labelledby="lineup-title">
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Lineup · Phase 1 <Pending ref="Q1" /></p>
+          {lineupRevealed
+            ? <p class="eyebrow">Lineup · Phase 1 <Pending ref="Q1" /></p>
+            : <p class="eyebrow">Lineup · Drops {lineupRevealLabel}</p>}
           <h2 id="lineup-title" class="display">Who’s playing</h2>
         </div>
-        <a class="more" href="/lineup">Full lineup <span aria-hidden="true">→</span></a>
+        {lineupRevealed && <a class="more" href="/lineup">Full lineup <span aria-hidden="true">→</span></a>}
       </div>
-      <ul class="lu-head">
-        {headliners.map((a) => (
-          <li><a class="display metal" href={`/lineup/${a.slug}`}>{a.name}</a></li>
-        ))}
-      </ul>
-      <ul class="lu-sub">
-        {subs.map((a) => <li><a href={`/lineup/${a.slug}`}>{a.name}</a></li>)}
-      </ul>
-      <ul class="lu-support">
-        {support.map((a) => <li><a href={`/lineup/${a.slug}`}>{a.name}</a></li>)}
-      </ul>
-      <p class="muted small more-soon">+ more to be announced</p>
+      {lineupRevealed ? (
+        <Fragment>
+          <ul class="lu-head">
+            {headliners.map((a) => (
+              <li><a class="display metal" href={`/lineup/${a.slug}`}>{a.name}</a></li>
+            ))}
+          </ul>
+          <ul class="lu-sub">
+            {subs.map((a) => <li><a href={`/lineup/${a.slug}`}>{a.name}</a></li>)}
+          </ul>
+          <ul class="lu-support">
+            {support.map((a) => <li><a href={`/lineup/${a.slug}`}>{a.name}</a></li>)}
+          </ul>
+          <p class="muted small more-soon">+ more to be announced</p>
+        </Fragment>
+      ) : (
+        <LineupCurtain />
+      )}
     </div>
   </section>
 

@@ -66,6 +66,7 @@
 ### Platform (P0)
 - FR22 Multi-event: Event → Edition → content. Home shows "current" edition; archive for past.
 - FR23 CMS with roles (admin, editor), draft/preview, scheduled publish (for lineup drops).
+- FR23b Lineup embargo: client sets a reveal date and time; until then no links to the lineup, curtain on the homepage lineup slot, set times hidden; lineup pages stay built for review ([ADR 0004](adr/0004-lineup-embargo-and-curtain.md)). P0
 - FR24 Custom domain, HTTPS, CDN.
 
 ## 3. Non-functional requirements

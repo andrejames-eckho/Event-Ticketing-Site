@@ -1,0 +1,19 @@
+---
+// Shown on /lineup pages while the lineup is embargoed (edition.lineupRevealAt). The pages are still built so the
+// client can check content and layout, but nothing on the site links here until the reveal.
+import { lineupRevealed, lineupRevealLabel } from '../data/event.js';
+---
+{!lineupRevealed && (
+  <p class="embargo small" role="note">
+    <strong>Hidden until {lineupRevealLabel}.</strong> Nothing on the site links here yet. Content and layout are ready for the reveal.
+  </p>
+)}
+
+<style>
+  .embargo {
+    display: block; margin: 16px 0 0; padding: 10px 14px;
+    border: 1px dashed var(--warn); border-radius: var(--radius);
+    color: var(--text); background: color-mix(in srgb, var(--warn) 8%, transparent);
+  }
+  .embargo strong { color: var(--warn); }
+</style>

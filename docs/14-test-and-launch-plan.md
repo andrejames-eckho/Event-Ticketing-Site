@@ -20,6 +20,8 @@
 | Remix upload | Editor uploads 1 GB zip from Studio on normal connection; URL saved; non-editor call to `/api/r2-upload-url` → 401 | Manual + curl | Pass |
 | Remix download | File downloads with clean filename, `remix_download` fires, served from `files.` subdomain | Manual + GTM preview | Pass |
 | Remix schedule | Pack with future `releaseAt` hidden; appears at release time | Manual | Pass |
+| Lineup embargo | Future `lineupRevealAt`: no `/lineup` link and no artist name in any non-lineup page HTML (grep `dist/`); schedule in "coming soon" state; site rebuilds and shows the lineup within 15 min of the reveal; empty field = public | `npm test`, grep build output, manual | Pass |
+| Curtain | Drag, click and hover move it but it always closes; vertical swipe scrolls on iOS + Android; still curtain with reduced motion; 2D fallback with WebGL off; idle = no animation frames | Manual, DevTools performance | Pass |
 
 ## 2. Launch checklist
 
@@ -34,6 +36,7 @@
 - [ ] `files.` subdomain live on R2, CORS limited to Studio origin
 - [ ] Client trained on CMS (recorded walkthrough, incl. videos + remix upload)
 - [ ] On-sale day runbook shared (who changes what, when)
+- [ ] `lineupRevealAt` set (or empty) and the reveal cron + deploy hook tested on staging
 
 ## 3. On-sale day runbook (summary)
 

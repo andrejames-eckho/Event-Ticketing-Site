@@ -1,0 +1,110 @@
+---
+// Homepage lineup slot while the lineup is embargoed (edition.lineupRevealAt).
+// A chrome curtain hangs over the lineup area. Visitors can push, tug and drag it, but it is pinned to the rod
+// and always falls shut: src/lib/curtain.js. Behind it sits a redacted copy of the lineup layout so the section
+// keeps its size, built from counts only: no artist names ship in this page's HTML.
+import Pending from './Pending.astro';
+import { edition, artists, lineupRevealLabel } from '../data/event.js';
+
+const [revealDay, revealTime] = lineupRevealLabel.split(' · ');
+const count = (b) => artists.filter((a) => a.billing === b).length;
+// Fixed bar widths, unrelated to real name lengths.
+const widths = [72, 58, 84, 46, 66, 52, 78, 40, 62, 56];
+const bars = (n, offset) => Array.from({ length: n }, (_, i) => widths[(i + offset) % widths.length]);
+const lines = {
+  head: bars(count('headliner'), 0),
+  sub: bars(count('sub'), 3),
+  support: bars(count('support'), 5),
+};
+---
+<div class="curtain-stage" data-curtain data-reveal-at={edition.lineupRevealAt}>
+  <div class="backstage" aria-hidden="true">
+    <div class="r-head">{lines.head.map((w) => <span style={`width:${w}%`}></span>)}</div>
+    <div class="r-sub">{lines.sub.map((w) => <span style={`width:${w / 3}%`}></span>)}</div>
+    <div class="r-support">{lines.support.map((w) => <span style={`width:${w / 5}%`}></span>)}</div>
+  </div>
+
+  <canvas class="cloth" aria-hidden="true"></canvas>
+  <canvas class="rod" aria-hidden="true"></canvas>
+
+  <div class="plate" data-curtain-plate>
+    <p class="eyebrow">Lineup reveal <Pending ref="Q5 copy" /></p>
+    <p class="when display metal" aria-label={lineupRevealLabel}>{revealDay}{revealTime && <span class="time">{revealTime}</span>}</p>
+    <p class="small muted num" data-curtain-countdown></p>
+    <a class="btn btn-sm" href="#waitlist">Tell me first</a>
+  </div>
+  <p class="say small" data-curtain-say aria-live="polite"></p>
+</div>
+
+<style>
+  .curtain-stage {
+    position: relative; isolation: isolate; overflow: hidden;
+    min-height: clamp(440px, 62vh, 620px);
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    background: radial-gradient(80% 60% at 50% 100%, var(--surface-2), var(--bg));
+    touch-action: pan-y; /* vertical swipes still scroll the page on phones */
+    user-select: none; -webkit-user-select: none;
+    cursor: grab;
+  }
+  .curtain-stage.grabbing { cursor: grabbing; }
+
+  /* Redacted lineup shape, only ever glimpsed through the seam */
+  .backstage { padding: 64px clamp(16px, 4vw, 40px) 40px; display: grid; gap: 22px; opacity: 0.6; }
+  .backstage div { display: flex; flex-wrap: wrap; gap: 12px 18px; }
+  .backstage span { display: block; border-radius: 4px; background: var(--surface-2); }
+  .r-head { flex-direction: column; }
+  .r-head span { height: clamp(40px, 8vw, 96px); }
+  .r-sub span { height: clamp(22px, 3vw, 34px); min-width: 90px; }
+  .r-support span { height: 18px; min-width: 70px; }
+
+  /* No-JS / pre-paint fallback: static pleats. The script hides this once the canvas draws. */
+  .cloth {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    background:
+      linear-gradient(var(--metal-mid), var(--metal-lo)) top / 100% 24px no-repeat,
+      linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 60px) 0 24px / 100% 100% no-repeat,
+      repeating-linear-gradient(90deg, var(--metal-lo) 0 4%, var(--metal-mid) 7%, var(--metal-hi) 9%, var(--metal-mid) 11%, var(--metal-lo) 15%);
+  }
+  .cloth.live { background: none; }
+  .rod { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+
+  .plate {
+    position: absolute; z-index: 2; left: 50%; top: 56px;
+    width: min(360px, calc(100% - 32px)); translate: -50% 0; transform-origin: 50% -40px;
+    display: grid; justify-items: center; gap: 8px; padding: 22px 20px 20px; text-align: center;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--metal-lo); border-radius: var(--radius-lg);
+    box-shadow: 0 18px 40px rgb(0 0 0 / 0.5);
+    pointer-events: none; /* drags pass through to the curtain... */
+  }
+  .plate a { pointer-events: auto; margin-top: 6px; } /* ...but the button still works */
+  /* Chains up to the rod */
+  .plate::before, .plate::after {
+    content: ''; position: absolute; top: -34px; height: 34px; width: 0;
+    border-left: 2px dotted var(--metal-mid);
+  }
+  .plate::before { left: 22%; }
+  .plate::after { right: 22%; }
+  .when { font-size: clamp(28px, 4.6vw, 44px); line-height: 1.05; }
+  .when .time { display: block; font-size: 0.55em; margin-top: 4px; }
+  .plate :global(.ph-tag) { pointer-events: auto; }
+
+  .say {
+    position: absolute; z-index: 2; left: 50%; bottom: 22px; translate: -50% 0; margin: 0;
+    padding: 8px 14px; border-radius: var(--pill); white-space: nowrap; max-width: calc(100% - 32px);
+    overflow: hidden; text-overflow: ellipsis;
+    background: var(--bg); color: var(--text); border: 1px solid var(--line);
+    opacity: 0; transition: opacity 0.25s; pointer-events: none;
+  }
+  .say.show { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .say { transition: none; }
+  }
+</style>
+
+<script>
+  import { initCurtain } from '../lib/curtain.js';
+  document.querySelectorAll('[data-curtain]').forEach((el) => initCurtain(el));
+</script>

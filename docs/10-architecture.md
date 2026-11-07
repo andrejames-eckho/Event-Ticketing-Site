@@ -47,7 +47,7 @@ Static-first marketing site + headless CMS + third-party checkout. No database, 
 ## 3. Key flows
 
 - **Content publish:** editor publishes in Sanity → webhook → revalidate affected pages (< 60 s live).
-- **Scheduled lineup drop:** Sanity scheduled publish at exact time.
+- **Scheduled lineup drop ([ADR 0004](adr/0004-lineup-embargo-and-curtain.md)):** client sets `Edition.lineupRevealAt` (docs/11). Pages are static, so the hidden/public state is decided at build time: a rebuild must run at that time. Plan: a Vercel cron (every 15 min) calls a small function that compares `lineupRevealAt` to now and fires the deploy hook once when it passes. Editing the field also rebuilds through the publish webhook. Hidden HTML carries no artist names, so nothing leaks before the rebuild. `/lineup` pages are still built while hidden (unlinked, noindex) so the team can check them; if a guessed URL is a risk, switch them to Sanity preview only.
 - **Ticket handoff:** see [09 §2](09-ticketmelon-integration.md).
 - **Video play:** click thumbnail → nocookie iframe replaces it → `video_play` (video_id, video_title) to dataLayer.
 - **Video publish:** editor pastes YouTube URL → publish → build checks oEmbed → card live (hidden if video dead).

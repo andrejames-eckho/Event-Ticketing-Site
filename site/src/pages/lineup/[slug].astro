@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Ph from '../../components/Ph.astro';
 import Pending from '../../components/Pending.astro';
 import ArtistCard from '../../components/ArtistCard.astro';
+import EmbargoNote from '../../components/EmbargoNote.astro';
 import { edition, artists, stage, saleStates } from '../../data/event.js';
 
 export function getStaticPaths() {
@@ -17,6 +18,7 @@ const initials = artist.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
 <Base title={artist.name} description={`${artist.name} at ${edition.title}, ${day.short}, ${stage.name}.`}>
   <article class="wrap artist">
     <a class="back small" href="/lineup">← Lineup</a>
+    <EmbargoNote />
     <div class="layout">
       <Ph desc="Press shot, portrait 4:5, min 1600px" ratio="4 / 5" class="photo">
         <span class="initials display metal" aria-hidden="true">{initials}</span>

@@ -1,7 +1,7 @@
 ---
 // Review-only controls for the G1/G2 walkthrough: art direction, sale state, placeholder markers.
 // Not rendered when PUBLIC_REVIEW=false (production).
-import { saleStates, ticketmelon } from '../data/event.js';
+import { saleStates, ticketmelon, lineupRevealed, lineupRevealLabel } from '../data/event.js';
 const show = import.meta.env.PUBLIC_REVIEW !== 'false';
 const themes = [
   { key: 'a', name: 'A · Liquid Chrome (current)' },
@@ -26,6 +26,7 @@ const themes = [
         </select>
       </label>
       <label class="opt"><input type="checkbox" data-review-ph checked /> Show placeholder tags</label>
+      <p class="meta">Lineup: <strong>{lineupRevealed ? 'public' : `hidden until ${lineupRevealLabel}`}</strong> · set in CMS, needs a rebuild to change</p>
       <p class="meta">Ticketmelon: <strong>{ticketmelon.status}</strong> · mode {ticketmelon.mode}</p>
       <button type="button" class="reset" data-review-reset>Reset bag + settings</button>
     </div>

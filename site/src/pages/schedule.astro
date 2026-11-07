@@ -2,13 +2,15 @@
 // One stage = one running order per night (no stage columns, no clashes).
 import Base from '../layouts/Base.astro';
 import Pending from '../components/Pending.astro';
-import { edition, artists, stage, scheduleReleased } from '../data/event.js';
+import { edition, artists, stage, scheduleReleased, lineupRevealed, lineupRevealLabel } from '../data/event.js';
 
 // '3:00 PM' -> '15:00' so the gates marker matches the 24h set times
 const to24 = (t) => {
   const [, h, m, pm] = t.match(/(\d+):(\d+)\s*(PM)?/i);
   return `${String((+h % 12) + (pm ? 12 : 0)).padStart(2, '0')}:${m}`;
 };
+// Set times list every act, so they stay hidden until the lineup reveal too.
+const showTimes = scheduleReleased && lineupRevealed;
 const setsFor = (day) => artists.filter((a) => a.day === day).sort((a, b) => a.start.localeCompare(b.start));
 ---
 <Base title="Schedule" description={`Set times for ${edition.title}.`}>
@@ -18,7 +20,7 @@ const setsFor = (day) => artists.filter((a) => a.day === day).sort((a, b) => a.s
     <p class="lead muted">One stage, back to back. You won’t miss a set. Times can change; check back on the day.</p>
   </header>
 
-  {scheduleReleased ? (
+  {showTimes ? (
     <section class="section top" aria-label="Set times">
       <div class="wrap">
         <div class="tabs" data-filter="day" aria-label="Choose day">
@@ -50,7 +52,11 @@ const setsFor = (day) => artists.filter((a) => a.day === day).sort((a, b) => a.s
     <section class="section top">
       <div class="wrap soon">
         <p class="display metal">Set times drop soon</p>
-        <p class="muted">Join the list below and we’ll send them the moment they’re out.</p>
+        {lineupRevealed ? (
+          <p class="muted">Join the list below and we’ll send them the moment they’re out.</p>
+        ) : (
+          <p class="muted">The lineup goes public {lineupRevealLabel}. Join the list below and we’ll send it the moment it’s out. <Pending ref="Q5 copy" /></p>
+        )}
       </div>
     </section>
   )}

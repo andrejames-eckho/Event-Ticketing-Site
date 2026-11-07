@@ -3,6 +3,7 @@
 //   CONFIRMED-PH  owner gave a working placeholder (2026-10-21): name, dates, venue
 //   PLACEHOLDER   waiting on client (docs/07 Q1–Q10). Client writes all copy (Q5) and supplies brand assets (Q4).
 //   PENDING-TM    waiting on Ticketmelon (docs/07 T1–T9)
+import { isLineupRevealed, formatReveal } from '../lib/lineup.js';
 
 // ── Ticketmelon ────────────────────────────────────────────────────────────────
 // status: 'pending' = no event/IDs yet, checkout shows a preview dialog instead of redirecting.
@@ -50,7 +51,14 @@ export const edition = {
   phaseEnds: '[Phase 1 end date]', // PLACEHOLDER Q3
   feeDisclosure: 'Prices in PHP, VAT inclusive. Ticketmelon service and payment fees are shown at checkout.', // Q8
   ageLimit: '18+', // PLACEHOLDER
+  // Lineup embargo (docs/11). Client sets this in the CMS. Until then: no links to /lineup anywhere, curtain on
+  // the homepage, schedule shows "coming soon". Empty = lineup public now. Override: PUBLIC_LINEUP_REVEAL_AT.
+  lineupRevealAt: import.meta.env.PUBLIC_LINEUP_REVEAL_AT ?? '2026-12-12T18:00:00+08:00', // PLACEHOLDER date (client)
 };
+
+// Build-time check: a rebuild must run at the reveal time (docs/10).
+export const lineupRevealed = isLineupRevealed(edition.lineupRevealAt);
+export const lineupRevealLabel = formatReveal(edition.lineupRevealAt);
 
 // CTA + status copy per sale state (docs/08 §6). PLACEHOLDER copy (Q5).
 export const saleStates = {
@@ -190,7 +198,7 @@ export const artists = [
   bio,
 }));
 
-export const scheduleReleased = true; // false shows the "set times drop soon" state (docs/08)
+export const scheduleReleased = true; // false shows the "set times drop soon" state (docs/08). Also forced off while the lineup is hidden.
 
 // ── Experience, venue, travel ──────────────────────────────────────────────────
 export const experiences = [
@@ -301,4 +309,4 @@ export const nav = [
   { href: '/schedule', label: 'Schedule' },
   { href: '/info', label: 'Info' },
   { href: '/faq', label: 'FAQ' },
-];
+].filter((item) => lineupRevealed || item.href !== '/lineup'); // embargo: header, mobile menu and footer drop the link

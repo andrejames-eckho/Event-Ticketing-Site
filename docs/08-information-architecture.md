@@ -24,9 +24,9 @@
 ## 2. Event home — scroll order (mobile first)
 
 1. Sticky header: logo · date · **Tickets** pill (label from `saleState`) · menu
-2. Hero: muted video/poster + scrim · name · date · venue · city · "Get tickets" + "See lineup" · status line ("Phase 2 on sale · ends 30 Nov")
+2. Hero: muted video/poster + scrim · name · date · venue · city · "Get tickets" + "See lineup" (hidden before the lineup reveal) · status line ("Phase 2 on sale · ends 30 Nov")
 3. Sale strip / countdown (only with real date)
-4. Lineup teaser: headliners big → typographic list → "Full lineup →"
+4. Lineup teaser: headliners big → typographic list → "Full lineup →". Before `lineupRevealAt`: interactive curtain over the slot with reveal date, countdown and "Tell me first" → waitlist; no names, no links ([ADR 0004](adr/0004-lineup-embargo-and-curtain.md))
 5. Tickets preview: 2–4 tier cards with phase ladder, "From ₱x", add-to-bag
 6. Experience tiles (stages, food, beach/camping)
 7. Packages / barkada bundles
@@ -79,4 +79,4 @@ Status banner → buyer tabs (1-Day / Weekend / VIP / Barkada) → tier cards wi
 
 ## 7. Navigation
 
-Header: Lineup · Tickets · Schedule · Info · FAQ · (Remix) · (News). Remix appears only when a pack is released. Mobile: hamburger + Tickets pill always visible.
+Header: (Lineup) · Tickets · Schedule · Info · FAQ · (Remix) · (News). Lineup appears only after `lineupRevealAt` (header, mobile menu and footer); Remix appears only when a pack is released. Before the reveal `/schedule` shows its "coming soon" state. Mobile: hamburger + Tickets pill always visible.

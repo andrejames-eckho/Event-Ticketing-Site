@@ -4,7 +4,7 @@ Full multi-page design build of the festival site (look and feel, UI/UX) with ev
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321
+npm run dev      # http://localhost:4321, plus a Network URL for phones/other devices on the same Wi-Fi
 npm test         # URL builder unit tests
 npm run build
 ```
@@ -13,9 +13,9 @@ npm run build
 
 | Route | What |
 |-------|------|
-| `/` | Event home funnel (docs/08 §2): hero, lineup teaser, ticket preview, experience, venue, recap + past-event videos, FAQ, waitlist |
+| `/` | Event home funnel (docs/08 §2): hero, lineup teaser (curtain before the reveal), ticket preview, experience, venue, recap + past-event videos, FAQ, waitlist |
 | `/tickets` | Tier cards with phase ladders + qty steppers, filters, GA vs VIP comparison, how-it-works, fees, ticket FAQ |
-| `/lineup`, `/lineup/[slug]` | Typographic poster + artist grid, day filter; artist pages |
+| `/lineup`, `/lineup/[slug]` | Typographic poster + artist grid, day filter; artist pages. Unlinked before the reveal |
 | `/schedule` | Set times by day and stage (`scheduleReleased: false` shows the "coming soon" state) |
 | `/info` | Venue, getting there, stays, what to bring, accessibility |
 | `/faq` | Searchable, grouped by topic |
@@ -24,6 +24,7 @@ npm run build
 ## Content and placeholders
 
 - **All content lives in [src/data/event.js](src/data/event.js)**, with field names from [docs/11](../docs/11-content-model.md) so it moves to Sanity 1:1. Comments mark each value `CONFIRMED-PH` (owner's working placeholder), `PLACEHOLDER` (client, Q*) or `PENDING-TM` (Ticketmelon, T*).
+- **Lineup embargo:** `edition.lineupRevealAt` hides the lineup until that time: no `/lineup` links anywhere, a draggable curtain over the homepage lineup slot ([LineupCurtain.astro](src/components/LineupCurtain.astro), physics in [lib/curtain.js](src/lib/curtain.js), WebGL rendering in [lib/curtain-gl.js](src/lib/curtain-gl.js)), schedule in its "coming soon" state. `/lineup` pages still build with a "hidden until" note. Decided at build time. Try it: `PUBLIC_LINEUP_REVEAL_AT= npm run dev` (empty = revealed) or set any ISO date. See [ADR 0004](../docs/adr/0004-lineup-embargo-and-curtain.md).
 - Placeholder copy and assets are flagged on the page with dashed tags (yellow = client, teal = Ticketmelon) and striped photo/video/map blocks that describe the shot needed. The client writes the final copy and supplies the brand assets.
 - **Past-event videos** (homepage recap): paste YouTube links into `pastVideos` in [src/data/event.js](src/data/event.js) (3 to 10, first = featured). Empty `youtubeUrl` shows a placeholder slot; dead or private links are dropped at build. Sanity version of the same rule: [../studio/schemaTypes/pastVideo.js](../studio/schemaTypes/pastVideo.js).
 - Logo, favicon, hero art and ring motif are agency placeholders built in CSS/SVG (no image files).

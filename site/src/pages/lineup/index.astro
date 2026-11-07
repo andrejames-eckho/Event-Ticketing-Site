@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import ArtistCard from '../../components/ArtistCard.astro';
 import Pending from '../../components/Pending.astro';
+import EmbargoNote from '../../components/EmbargoNote.astro';
 import { edition, artists } from '../../data/event.js';
 
 const order = { headliner: 0, sub: 1, support: 2 };
@@ -13,6 +14,7 @@ const tiersOf = (b) => sorted.filter((a) => a.billing === b);
     <p class="eyebrow">{edition.dateLong} <Pending ref="Q1 lineup" /></p>
     <h1 class="display metal">Lineup</h1>
     <p class="lead muted">Phase 1 announcement. More acts drop [date].</p>
+    <EmbargoNote />
   </header>
 
   <section class="section top" aria-label="Artists">
