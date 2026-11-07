@@ -34,4 +34,8 @@ const { href = '/', size = 'md' } = Astro.props;
   .lg .mark { width: 64px; height: 64px; }
   .lg .brand { font-size: 13px; }
   .lg .title { font-size: 36px; }
+  @media (max-width: 480px) {
+    .lg .mark { width: 48px; height: 48px; }
+    .lg .title { font-size: calc(28px * var(--display-fit)); }
+  }
 </style>

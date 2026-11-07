@@ -85,12 +85,17 @@ const sale = saleStates[edition.saleState];
   .pill { white-space: nowrap; }
   @media (max-width: 480px) {
     .header-inner { gap: 8px; }
-    .actions { gap: 6px; }
-    .pill { padding: 0 14px; font-size: 14px; }
+    .actions { gap: 4px; }
+    .pill { padding: 0 12px; font-size: 14px; }
     .bag-btn, .menu-btn { width: 42px; height: 42px; }
+    .header :global(.logo) { gap: 8px; min-width: 0; }
     .header :global(.logo .brand) { display: none; }
-    .header :global(.logo .title) { font-size: 15px; }
+    .header :global(.logo .title) { font-size: calc(15px * var(--display-fit)); }
     .header :global(.logo .mark) { width: 28px; height: 28px; }
+  }
+  /* Small phones (SE, 360px Android): no room for wordmark + bag + CTA + menu. Mark only; link keeps its aria-label. */
+  @media (max-width: 379px) {
+    .header :global(.logo .words) { display: none; }
   }
 
   .menu {
@@ -104,7 +109,7 @@ const sale = saleStates[edition.saleState];
     width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer;
   }
   .menu-nav { display: grid; gap: 4px; padding: 32px 0; }
-  .menu-nav a { font-size: clamp(40px, 12vw, 64px); text-decoration: none; padding: 4px 0; }
+  .menu-nav a { font-size: calc(clamp(40px, 12vw, 64px) * var(--display-fit)); text-decoration: none; padding: 4px 0; }
   .menu-nav a:hover { color: var(--metal-mid); }
   .menu-foot { margin-top: auto; padding: 24px 0 40px; border-top: 1px solid var(--line); display: grid; gap: 4px; }
 </style>

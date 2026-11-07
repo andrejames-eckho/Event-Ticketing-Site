@@ -197,7 +197,7 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
 
 <style>
   /* Hero */
-  .hero { position: relative; overflow: hidden; min-height: min(92svh, 900px); display: grid; align-items: end; padding: 120px 0 64px; }
+  .hero { position: relative; overflow: hidden; min-height: min(92svh, 900px); display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; padding: 120px 0 64px; }
   .hero-art { position: absolute; inset: 0; pointer-events: none; }
   .art-shape {
     position: absolute; right: -8vw; top: 4%; width: min(78vw, 860px); aspect-ratio: 1;
@@ -210,7 +210,7 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
     font-family: var(--font-label); font-weight: 600; font-size: clamp(14px, 1.6vw, 18px);
     letter-spacing: 0.4em; text-transform: uppercase; color: var(--text); margin-bottom: 6px;
   }
-  .hero-title .display { font-size: clamp(40px, 11.6vw, 152px); }
+  .hero-title .display { font-size: calc(clamp(40px, 11.6vw, 152px) * var(--display-fit)); }
   .hero-tag { margin-bottom: 32px; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
   .hero-status { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 24px; }
@@ -270,7 +270,7 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
   /* Lineup */
   .lu-head, .lu-sub, .lu-support { list-style: none; margin: 0; padding: 0; }
   .lu-head a, .lu-sub a, .lu-support a { text-decoration: none; }
-  .lu-head li { font-size: clamp(40px, 9vw, 112px); }
+  .lu-head li { font-size: calc(clamp(40px, 9vw, 112px) * var(--display-fit)); }
   .lu-head li + li { margin-top: 4px; }
   .lu-head a:hover { filter: brightness(1.2); }
   .lu-sub { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 28px; }
@@ -290,7 +290,7 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
   .exp-card.wide { grid-column: 1 / -1; grid-template-columns: 1.6fr 1fr; align-items: end; column-gap: 32px; }
   .exp-card.wide :global(.ph) { grid-row: span 2; }
   .exp-card h3 { font-size: clamp(24px, 3vw, 34px); margin-top: 6px; }
-  .exp-card.wide h3 { font-size: clamp(32px, 5vw, 56px); }
+  .exp-card.wide h3 { font-size: calc(clamp(32px, 5vw, 56px) * var(--display-fit)); }
   @media (max-width: 860px) {
     .exp { grid-template-columns: 1fr 1fr; }
     .exp-card.wide { grid-template-columns: 1fr; }
@@ -299,7 +299,7 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
 
   /* Venue */
   .venue { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .venue h2 { font-size: clamp(40px, 7vw, 84px); margin: 10px 0 14px; }
+  .venue h2 { font-size: calc(clamp(40px, 7vw, 84px) * var(--display-fit)); margin: 10px 0 14px; }
   .venue-addr { margin-bottom: 24px; }
   .travel { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 14px; }
   .travel li { display: grid; gap: 2px; padding-left: 16px; border-left: 2px solid var(--metal-lo); }
@@ -309,10 +309,10 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
   @media (max-width: 860px) { .venue { grid-template-columns: 1fr; } }
 
   /* Stats + video */
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 0 0 32px; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0 0 32px; }
   .stats div { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-lg); display: flex; flex-direction: column-reverse; gap: 6px; }
-  .stats dd { margin: 0; font-size: clamp(36px, 5vw, 64px); }
-  @media (max-width: 720px) { .stats { grid-template-columns: 1fr 1fr; } }
+  .stats dd { margin: 0; font-size: calc(clamp(30px, 5vw, 64px) * var(--display-fit)); overflow-wrap: anywhere; }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .stats div { padding: 16px; } }
   .videos { display: grid; gap: 24px; }
   .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 16px; }
   .video-grid.two { grid-template-columns: 1fr 1fr; } /* 2 or 4 small videos: no empty column */
@@ -329,6 +329,6 @@ const strip = [edition.dateLabel, `${edition.venue.name} · ${edition.venue.city
 
   /* FAQ */
   .faq-wrap { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-  .faq-wrap h2 { font-size: clamp(44px, 7vw, 84px); margin: 10px 0 20px; }
+  .faq-wrap h2 { font-size: calc(clamp(44px, 7vw, 84px) * var(--display-fit)); margin: 10px 0 20px; }
   @media (max-width: 860px) { .faq-wrap { grid-template-columns: 1fr; gap: 20px; } .faq-all { display: none; } }
 </style>

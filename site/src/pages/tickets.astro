@@ -172,6 +172,6 @@ const mark = (v) => (v === true ? '✓' : v === false ? '—' : v);
   @media (max-width: 520px) { .fine { grid-template-columns: 1fr; } }
 
   .faq-wrap { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-  .faq-wrap h2 { font-size: clamp(44px, 7vw, 84px); margin-top: 10px; }
+  .faq-wrap h2 { font-size: calc(clamp(44px, 7vw, 84px) * var(--display-fit)); margin-top: 10px; }
   @media (max-width: 860px) { .faq-wrap { grid-template-columns: 1fr; gap: 20px; } }
 </style>

@@ -86,7 +86,7 @@ const lines = {
   }
   .plate::before { left: 22%; }
   .plate::after { right: 22%; }
-  .when { font-size: clamp(28px, 4.6vw, 44px); line-height: 1.05; }
+  .when { font-size: calc(clamp(28px, 4.6vw, 44px) * var(--display-fit)); line-height: 1.05; }
   .when .time { display: block; font-size: 0.55em; margin-top: 4px; }
   .plate :global(.ph-tag) { pointer-events: auto; }
 

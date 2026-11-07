@@ -25,7 +25,7 @@ const { page } = Astro.props;
 
 <style>
   .legal { padding: 64px 0 96px; display: grid; gap: 16px; }
-  .legal h1 { font-size: clamp(36px, 6vw, 64px); }
+  .legal h1 { font-size: calc(clamp(36px, 6vw, 64px) * var(--display-fit)); }
   .body { display: grid; gap: 16px; margin-top: 24px; max-width: 68ch; }
   .body h2 { font-size: 22px; margin-top: 16px; }
 </style>

@@ -60,7 +60,7 @@ const initials = artist.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
   .layout :global(.photo .ph-label) { position: absolute; left: 0; bottom: 0; }
   .initials { font-size: clamp(80px, 14vw, 180px); }
   .info { display: grid; gap: 24px; }
-  .info h1 { font-size: clamp(44px, 8vw, 104px); }
+  .info h1 { font-size: calc(clamp(40px, 8vw, 104px) * var(--display-fit)); overflow-wrap: anywhere; }
   .facts { display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 12px 32px; margin: 0; }
   .facts dd { margin: 4px 0 0; font-weight: 600; }
   .bio { font-size: 18px; max-width: 60ch; }
@@ -68,7 +68,7 @@ const initials = artist.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('');
   .more { margin-top: 80px; padding-top: 32px; border-top: 1px solid var(--line); }
   .more .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px; }
   @media (max-width: 860px) {
-    .layout { grid-template-columns: 1fr; gap: 28px; }
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
     .layout :global(.photo) { position: static; }
     .facts { grid-template-columns: 1fr 1fr; }
     .more .grid { grid-template-columns: 1fr 1fr; }

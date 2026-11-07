@@ -57,8 +57,8 @@ const tiersOf = (b) => sorted.filter((a) => a.billing === b);
   .row a { text-decoration: none; }
   .row li[hidden] { display: none; }
   .headliner { flex-direction: column; gap: 6px; }
-  .headliner a { font-size: clamp(44px, 10vw, 128px); }
-  .sub a { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; font-size: clamp(24px, 4vw, 44px); }
+  .headliner a { font-size: calc(clamp(40px, 10vw, 128px) * var(--display-fit)); overflow-wrap: anywhere; }
+  .sub a { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; font-size: calc(clamp(24px, 4vw, 44px) * var(--display-fit)); }
   .support a { font-size: clamp(18px, 2.2vw, 24px); color: var(--muted); }
   .row a:hover { color: var(--metal-hi); }
   .grid-title { margin: 56px 0 20px; }

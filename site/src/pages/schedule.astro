@@ -77,14 +77,14 @@ const setsFor = (day) => artists.filter((a) => a.day === day).sort((a, b) => a.s
   .what { text-decoration: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
   .name { font-size: clamp(20px, 2.6vw, 28px); font-weight: 600; }
   .sub .name { font-family: var(--font-display); text-transform: uppercase; font-weight: 700; }
-  .headliner .name { font-size: clamp(34px, 6vw, 64px); }
+  .headliner .name { font-size: calc(clamp(34px, 6vw, 64px) * var(--display-fit)); }
   .run li.headliner::before { background: var(--cta); border-color: var(--cta); width: 16px; height: 16px; left: 125px; margin-top: -8px; }
   a.what:hover .name { color: var(--metal-hi); }
   .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border: 1px solid var(--metal-mid); border-radius: var(--pill); color: var(--metal-hi); }
   .marker { color: var(--muted); }
   .marker .what { font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
   .run li.marker::before { border-style: dashed; }
-  .soon p.display { font-size: clamp(36px, 7vw, 80px); margin-bottom: 12px; }
+  .soon p.display { font-size: calc(clamp(36px, 7vw, 80px) * var(--display-fit)); margin-bottom: 12px; }
   @media (max-width: 640px) {
     .run::before { left: 6px; }
     .run li { grid-template-columns: 1fr; gap: 4px; padding: 14px 0 14px 32px; }
