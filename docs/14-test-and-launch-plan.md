@@ -21,7 +21,7 @@
 | Remix download | File downloads with clean filename, `remix_download` fires, served from `files.` subdomain | Manual + GTM preview | Pass |
 | Remix schedule | Pack with future `releaseAt` hidden; appears at release time | Manual | Pass |
 | Lineup embargo | Future `lineupRevealAt`: no `/lineup` link and no artist name in any non-lineup page HTML (grep `dist/`); schedule in "coming soon" state; site rebuilds and shows the lineup within 15 min of the reveal; empty field = public | `npm test`, grep build output, manual | Pass |
-| Curtain | Drag, click and hover move it but it always closes; vertical swipe scrolls on iOS + Android; still curtain with reduced motion; 2D fallback with WebGL off; idle = no animation frames | Manual, DevTools performance | Pass |
+| Curtain | Drag, click and hover move it but it always closes; pulled fabric slips free when taut; sign swings on its chain and settles level; CTA clickable; vertical swipe scrolls on iOS + Android; still curtain with reduced motion; 2D fallback with WebGL off; idle = no animation frames | Manual, DevTools performance | Pass |
 
 ## 2. Launch checklist
 
